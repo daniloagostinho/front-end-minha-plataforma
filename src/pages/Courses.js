@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { initialCourses, additionalCourses } from '../data/coursesData'; // Importando os dados
+import Navbar from '../components/Navbar';
 
 const Courses = () => {
   const [courses, setCourses] = useState(initialCourses);
@@ -15,6 +16,9 @@ const Courses = () => {
 
   return (
     <div className="bg-background min-h-screen">
+
+      <Navbar />
+
       <header className="bg-gradient-to-r from-purple-600 to-primary text-white py-16 text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight">

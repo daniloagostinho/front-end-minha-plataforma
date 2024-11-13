@@ -1,15 +1,18 @@
 // src/pages/Home.js
-import React from 'react';
-import { FaDollarSign, FaBookOpen, FaUsers, FaRocket } from 'react-icons/fa';
-import nodeImage from '../assets/images/node.png'; // Você pode substituir esta imagem por outra mais relevante
-import reactImage from '../assets/images/react.png'; // Substituir por um ícone se desejar
 import heroImage from '../assets/images/hero.jpg'; // Adicione uma imagem atrativa para o lado direito
 import { useNavigate } from 'react-router-dom';
 
+import { FaDollarSign, FaBookOpen, FaUsers, FaBars, FaTimes } from 'react-icons/fa';
+
+import React, { useState } from 'react';
+
 import { initialCourses } from '../data/coursesData';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const latestCourses = Object.values(initialCourses)
     .flat()
@@ -18,6 +21,9 @@ const Home = () => {
 
   return (
     <div className="bg-background min-h-screen">
+
+      <Navbar />
+
       {/* Hero Section */}
       <header className="bg-gradient-to-r from-purple-600 to-primary text-white py-16">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
