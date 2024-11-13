@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { initialCourses } from '../data/coursesData';
+import Navbar from '../components/Navbar';
 
 
 
@@ -22,6 +23,8 @@ const CourseDetails = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Cabeçalho do Curso */}
+      <Navbar />
+
       <header className="bg-gradient-to-r from-gray-800 to-black text-white py-8 text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-3xl md:text-4xl font-bold">{course.title}</h1>

@@ -17,25 +17,25 @@ const Navbar = () => {
             onClick={() => navigate('/home')}
             className="text-gray-800 font-bold hover:text-primary"
           >
-            Home
+            Início
           </button>
           <button
             onClick={() => navigate('/courses')}
             className="text-gray-800 font-bold hover:text-primary"
           >
-            Courses
+            Cursos
           </button>
           <button
             onClick={() => navigate('/dashboard')}
             className="text-gray-800 font-bold hover:text-primary"
           >
-            Dashboard
+            Painel
           </button>
           <button
             onClick={() => navigate('/signup')}
             className="text-gray-800 font-bold hover:text-primary"
           >
-            Sign Up
+            Cadastrar grátis
           </button>
         </div>
         {/* Hamburger Menu for Small Screens */}
