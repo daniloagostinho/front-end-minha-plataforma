@@ -96,6 +96,11 @@ const Home = () => {
                 key={course.id}
                 className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-200 text-center w-full max-w-xs sm:max-w-sm md:max-w-md"
               >
+                <img
+                  src={course.image}
+                  alt={`Imagem do curso de ${course.title}`}
+                  className="mx-auto mb-4 rounded-md w-32 h-32 md:w-40 md:h-40 object-cover"
+                />
                 <h3 className="text-2xl font-bold mb-4">{course.title}</h3>
                 <p className="text-neutral mb-6">{course.description}</p>
                 <button

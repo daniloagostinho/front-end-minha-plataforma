@@ -1,4 +1,12 @@
 // src/data/coursesData.js
+
+import nodeImage from '../assets/images/node.png';
+import reactImage from '../assets/images/react.png';
+import angularImage from '../assets/images/angular.png';
+import vueImage from '../assets/images/vue.png';
+import devopsImage from '../assets/images/devops.png';
+
+
 export const initialCourses = {
     "Front-end": [
       {
@@ -16,7 +24,8 @@ export const initialCourses = {
             section: 'Componentes',
             lessons: ['Criando componentes', 'Props e estado']
           }
-        ]
+        ],
+        image: reactImage
       },
       {
         id: 2,
@@ -33,7 +42,26 @@ export const initialCourses = {
             section: 'Diretivas e Serviços',
             lessons: ['Usando diretivas', 'Criando serviços']
           }
-        ]
+        ],
+        image: angularImage
+      },
+      {
+        id: 2,
+        title: 'Curso de Vue',
+        description: 'Aprenda a construir aplicações robustas com Vue.',
+        videoUrl: 'https://www.example.com/video-angular',
+        fullDescription: 'Aqui está a descrição completa do curso de Vue.',
+        curriculum: [
+          {
+            section: 'Fundamentos do Vue',
+            lessons: ['Instalação', 'Primeiros passos']
+          },
+          {
+            section: 'Diretivas e Serviços',
+            lessons: ['Usando diretivas', 'Criando serviços']
+          }
+        ],
+        image: vueImage
       }
     ],
     "Back-end": [
@@ -52,7 +80,8 @@ export const initialCourses = {
             section: 'APIs RESTful',
             lessons: ['Criando rotas', 'Trabalhando com bancos de dados']
           }
-        ]
+        ],
+        image: nodeImage
       },
       // Adicione os outros cursos da mesma forma...
     ]
@@ -75,7 +104,8 @@ export const initialCourses = {
             section: 'Trabalhando com Imagens',
             lessons: ['Criando imagens', 'Gerenciando contêineres']
           }
-        ]
+        ],
+        image: devopsImage
       },
       // Adicione os outros cursos da mesma forma...
     ]

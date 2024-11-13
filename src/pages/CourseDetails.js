@@ -22,9 +22,14 @@ const CourseDetails = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Cabeçalho do Curso */}
-      <header className="bg-gradient-to-r from-purple-600 to-primary text-white py-8 text-center">
+      <header className="bg-gradient-to-r from-gray-800 to-black text-white py-8 text-center">
         <div className="container mx-auto px-6">
           <h1 className="text-3xl md:text-4xl font-bold">{course.title}</h1>
+          <img
+            src={course.image}
+            alt={`Imagem do curso de ${course.title}`}
+            className="mx-auto mb-4 rounded-md w-32 h-32 md:w-40 md:h-40 object-cover"
+          />
           <p className="mt-2 text-lg">{course.description}</p>
         </div>
       </header>
