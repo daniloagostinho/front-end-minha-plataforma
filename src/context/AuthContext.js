@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({
     id: 1,
     name: 'Aluno Teste',
-    enrolledCourses: [1], // IDs dos cursos que o aluno está matriculado
+    enrolledCourses: [1, 3], // IDs dos cursos que o aluno está matriculado (agora incluindo o novo curso)
   });
 
   return (
