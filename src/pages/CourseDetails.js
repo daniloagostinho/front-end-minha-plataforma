@@ -2,48 +2,18 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
+import { initialCourses } from '../data/coursesData';
 
-const courseData = {
-  1: {
-    title: 'Curso de React',
-    videoUrl: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
-    description: 'Desenvolva interfaces dinâmicas e interativas com React.',
-    fullDescription: `
-      Bem-vindo ao curso de React! Aqui você terá a oportunidade de aprender
-      e dominar as habilidades essenciais para criar interfaces dinâmicas
-      e interativas. Você vai descobrir os conceitos principais, como componentes,
-      estado, props, hooks, e muito mais, preparando-se para construir aplicações
-      modernas de forma prática e eficiente.
-      
-      <strong>O que você irá aprender:</strong>
-      <ul>
-        <li>Fundamentos do React: JSX, componentes e props.</li>
-        <li>Gerenciamento de estado com hooks e context API.</li>
-        <li>Boas práticas de organização e estrutura de projetos.</li>
-      </ul>
-      
-      <strong>Público-alvo:</strong> Este curso é ideal para desenvolvedores
-      front-end que desejam dominar o React e construir projetos interativos.
-      
-      Prepare-se para transformar suas habilidades em desenvolvimento front-end!
-    `,
-    curriculum: [
-      {
-        section: 'Introdução ao React',
-        lessons: ['O que é React?', 'Configurando o Ambiente', 'JSX e Componentes'],
-      },
-      {
-        section: 'Avançando com React',
-        lessons: ['Hooks e Estado', 'Gerenciamento de Props', 'Comunicação entre Componentes'],
-      },
-    ],
-  },
-  // Adicione mais cursos conforme necessário...
-};
+
 
 const CourseDetails = () => {
-  const { courseId } = useParams();
-  const course = courseData[courseId];
+  const { id } = useParams();
+  const courseId = parseInt(id, 10); // Converte o ID da URL para um número
+
+  // Procura o curso pelo ID
+  const course = Object.values(initialCourses)
+    .flat()
+    .find(course => course.id === courseId);
 
   if (!course) {
     return <div className="text-center mt-12">Curso não encontrado.</div>;
