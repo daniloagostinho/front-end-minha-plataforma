@@ -40,18 +40,25 @@ const courses = [
 ];
 
 const Dashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const [userCourses, setUserCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   useEffect(() => {
-    const enrolledCourses = courses.filter(course => user.enrolledCourses.includes(course.id));
-    setUserCourses(enrolledCourses);
+    if (user && user.enrolledCourses) {
+      const enrolledCourses = courses.filter(course => user.enrolledCourses.includes(course.id));
+      setUserCourses(enrolledCourses);
+    }
   }, [user]);
+
+  // Se o usuário ainda não foi carregado, mostrar um carregamento ou mensagem padrão
+  if (loading) {
+    return <div>Carregando...</div>; // Mostra um indicador de carregamento enquanto a requisição é processada
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Cabeçalho com Fundo Preto */} 
+      {/* Cabeçalho com Fundo Preto */}
       <header className="bg-black shadow-md p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
         <div className="text-xl font-bold text-white">
           <span>Bem-vindo, </span>{user.name}!

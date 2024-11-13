@@ -1,19 +1,28 @@
-// src/context/AuthContext.js
-import React, { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
-// Criar o contexto de autenticação
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Simular um usuário logado com cursos específicos
-  const [user, setUser] = useState({
-    id: 1,
-    name: 'Danilo',
-    enrolledCourses: [1, 3], // IDs dos cursos que o aluno está matriculado (agora incluindo o novo curso)
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Adiciona o estado de loading
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/current_user', {
+      credentials: 'include'
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Erro ao buscar o usuário:', error);
+        setLoading(false);
+      });
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, loading }}>
       {children}
     </AuthContext.Provider>
   );

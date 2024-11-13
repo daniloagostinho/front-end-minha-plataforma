@@ -52,6 +52,11 @@ const SignUp = () => {
         <p className="text-center text-sm text-gray-500 mt-6">
           Já tem uma conta? <a href="/login" className="text-primary hover:underline">Faça login</a>
         </p>
+
+        <button onClick={() => window.location.href = 'http://localhost:5000/auth/google'} className="w-full bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200">
+          Login com Google
+        </button>
+
       </div>
     </div>
   );
