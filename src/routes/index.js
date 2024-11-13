@@ -7,6 +7,9 @@ import Home from '../pages/Home';
 import SignUp from '../pages/SignUp';
 import Courses from '../pages/Courses';
 
+import CourseDetails from '../pages/CourseDetails'
+import CoursePlayer from '../pages/CoursePlayer';
+
 const AppRoutes = () => {
     return (
         <Router>
@@ -17,6 +20,8 @@ const AppRoutes = () => {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/course/:courseId" element={<CourseDetails />} />
+                <Route path="/coursePlayer" element={<CoursePlayer />} />
             </Routes>
         </Router>
     );
