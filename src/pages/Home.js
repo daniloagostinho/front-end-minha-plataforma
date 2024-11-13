@@ -6,8 +6,16 @@ import reactImage from '../assets/images/react.png'; // Substituir por um ícone
 import heroImage from '../assets/images/hero.jpg'; // Adicione uma imagem atrativa para o lado direito
 import { useNavigate } from 'react-router-dom';
 
+import { initialCourses } from '../data/coursesData';
+
 const Home = () => {
   const navigate = useNavigate();
+
+  const latestCourses = Object.values(initialCourses)
+    .flat()
+    .slice(-2);
+
+
   return (
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
@@ -82,39 +90,23 @@ const Home = () => {
       <section className="py-16 bg-gray-100 text-center">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold mb-6">Últimos Cursos Lançados</h2>
-          <div className="flex flex-wrap justify-center gap-6">
-            <div className="bg-white p-6 rounded-md shadow-md hover:shadow-lg transition duration-200 text-center">
-              <img
-                src={nodeImage}
-                alt="Curso de Node.js"
-                className="mx-auto mb-4 rounded-md w-32 h-32 md:w-40 md:h-40 object-cover"
-              />
-              <h3 className="text-xl font-bold mb-2">Curso de Node.js</h3>
-              <p className="text-neutral mb-4">Aprenda a construir aplicações backend robustas com Node.js.</p>
-              <button
-                className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-purple-700 transition duration-200"
-                onClick={() => navigate('/signup')}
+          <div className="flex flex-wrap justify-center gap-8">
+            {latestCourses.map(course => (
+              <div
+                key={course.id}
+                className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-200 text-center w-full max-w-xs sm:max-w-sm md:max-w-md"
               >
-                Ver Curso
-              </button>
-            </div>
-            <div className="bg-white p-6 rounded-md shadow-md hover:shadow-lg transition duration-200 text-center">
-              <img
-                src={reactImage}
-                alt="Curso de Node.js"
-                className="mx-auto mb-4 rounded-md w-32 h-32 md:w-40 md:h-40 object-cover"
-              />
-              <h3 className="text-xl font-bold mb-2">Curso de React</h3>
-              <p className="text-neutral mb-4">Desenvolva interfaces dinâmicas e interativas com React.</p>
-              <button
-                className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-purple-700 transition duration-200"
-                onClick={() => navigate('/signup')}
-              >
-                Ver Curso
-              </button>
-            </div>
+                <h3 className="text-2xl font-bold mb-4">{course.title}</h3>
+                <p className="text-neutral mb-6">{course.description}</p>
+                <button
+                  className="bg-primary text-white font-semibold px-6 py-3 rounded-md hover:bg-secondary transition duration-200"
+                  onClick={() => navigate(`/course/${course.id}`)}
+                >
+                  Ver Curso
+                </button>
+              </div>
+            ))}
           </div>
-          {/* Botão de Ver Todos os Cursos com espaçamento ajustado */}
           <button
             className="mt-12 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-10 rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
             onClick={() => navigate('/courses')}
