@@ -6,7 +6,7 @@ import reactImage from '../assets/images/react.png';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   return (
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
@@ -18,9 +18,13 @@ const Home = () => {
           <p className="mt-4 text-lg">
             Cursos de tecnologia acessíveis para pessoas de baixa renda. Venha aprender e melhorar sua qualidade de vida com nossos cursos.
           </p>
-          <button className="mt-8 bg-secondary text-white font-semibold px-6 py-3 rounded-md hover:bg-purple-700 transition duration-200">
+          <button
+            className="mt-8 bg-secondary text-white font-semibold px-6 py-3 rounded-md hover:bg-purple-700 transition duration-200"
+            onClick={() => navigate('/courses')}
+          >
             Ver Cursos
           </button>
+
         </div>
       </header>
 
@@ -97,7 +101,7 @@ const Home = () => {
           Inscreva-se hoje mesmo e comece sua jornada no mundo da programação.
         </p>
         <button className="bg-secondary text-white font-semibold px-6 py-3 rounded-md hover:bg-purple-700 transition duration-200"
-        onClick={() => navigate('/signup')}>
+          onClick={() => navigate('/signup')}>
           Inscrever-se
         </button>
       </section>
