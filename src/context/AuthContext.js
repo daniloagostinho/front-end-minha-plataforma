@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   // Simular um usuário logado com cursos específicos
   const [user, setUser] = useState({
     id: 1,
-    name: 'Aluno Teste',
+    name: 'Danilo',
     enrolledCourses: [1, 3], // IDs dos cursos que o aluno está matriculado (agora incluindo o novo curso)
   });
 

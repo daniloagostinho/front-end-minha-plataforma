@@ -21,6 +21,7 @@ const CoursePlayer = ({ course }) => {
               </summary>
               <ul className="ml-4 mt-2 space-y-2">
                 {session.lessons.map((lesson, lessonIndex) => {
+                  // Verifica se o URL da lição corresponde ao vídeo selecionado
                   const isActive = lesson.url === selectedVideo;
 
                   return (
@@ -31,7 +32,7 @@ const CoursePlayer = ({ course }) => {
                       }`}
                       onClick={() => setSelectedVideo(lesson.url)}
                     >
-                      {isActive && <FaArrowRight className="mr-2" />}
+                      {isActive && <FaArrowRight className="mr-2" />} {/* Mostra a seta apenas se for ativo */}
                       {lesson.title}
                     </li>
                   );
