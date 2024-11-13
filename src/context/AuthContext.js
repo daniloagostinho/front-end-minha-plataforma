@@ -5,7 +5,6 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Adiciona o estado de loading
-
   useEffect(() => {
     fetch('https://back-end-minha-plataforma-app.vercel.app/api/current_user', {
       credentials: 'include'
