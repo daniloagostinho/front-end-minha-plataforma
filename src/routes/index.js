@@ -4,16 +4,17 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import Home from '../pages/Home';
+import SignUp from '../pages/SignUp';
 
 const AppRoutes = () => {
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<Navigate to="/home" />} />
-                <Route path="/" element={<Navigate to="/dashboard" />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/signup" element={<SignUp />} />
             </Routes>
         </Router>
     );

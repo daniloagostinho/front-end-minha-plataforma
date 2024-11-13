@@ -3,8 +3,10 @@ import React from 'react';
 import { FaDollarSign, FaBookOpen, FaUsers } from 'react-icons/fa';
 import nodeImage from '../assets/images/node.png';
 import reactImage from '../assets/images/react.png';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate(); 
   return (
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
@@ -94,7 +96,8 @@ const Home = () => {
         <p className="text-neutral mb-8">
           Inscreva-se hoje mesmo e comece sua jornada no mundo da programação.
         </p>
-        <button className="bg-secondary text-white font-semibold px-6 py-3 rounded-md hover:bg-purple-700 transition duration-200">
+        <button className="bg-secondary text-white font-semibold px-6 py-3 rounded-md hover:bg-purple-700 transition duration-200"
+        onClick={() => navigate('/signup')}>
           Inscrever-se
         </button>
       </section>
