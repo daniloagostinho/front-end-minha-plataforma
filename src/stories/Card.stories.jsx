@@ -11,7 +11,7 @@ const Card = () => (
       </p>
     </div>
     <div className="px-6 pt-4 pb-2">
-      <button className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200">
+      <button className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200">
         Saiba Mais
       </button>
     </div>

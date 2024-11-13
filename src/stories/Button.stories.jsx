@@ -6,7 +6,7 @@ const Button = ({ label, variant }) => {
   const baseClass = "font-semibold px-6 py-2 rounded-md transition duration-200";
 
   const classes = {
-    primary: `bg-primary text-white hover:bg-blue-700 ${baseClass}`,
+    primary: `bg-primary text-white hover:bg-secondary ${baseClass}`,
     secondary: `bg-secondary text-white hover:bg-purple-700 ${baseClass}`,
     success: `bg-success text-white hover:bg-green-600 ${baseClass}`,
     error: `bg-error text-white hover:bg-red-600 ${baseClass}`,

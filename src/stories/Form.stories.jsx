@@ -7,7 +7,7 @@ const Form = () => (
       <span className="text-gray-700">Nome Completo</span>
       <input
         type="text"
-        className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+        className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-300"
         placeholder="Digite seu nome"
       />
     </label>
@@ -16,12 +16,12 @@ const Form = () => (
       <span className="text-gray-700">Email</span>
       <input
         type="email"
-        className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+        className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-300"
         placeholder="Digite seu email"
       />
     </label>
 
-    <button className="bg-primary text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700 transition duration-200">
+    <button className="bg-primary text-white font-semibold px-6 py-2 rounded-md hover:bg-secondary transition duration-200">
       Enviar
     </button>
   </div>

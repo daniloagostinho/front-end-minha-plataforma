@@ -51,12 +51,12 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Cabeçalho com Fundo Preto */}
+      {/* Cabeçalho com Fundo Preto */} 
       <header className="bg-black shadow-md p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
         <div className="text-xl font-bold text-white">
           <span>Bem-vindo, </span>{user.name}!
         </div>
-        <button className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200">
+        <button className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200">
           Logout
         </button>
       </header>
@@ -72,7 +72,7 @@ const Dashboard = () => {
                 <h2 className="text-lg font-bold mb-2">{course.title}</h2>
                 <p className="text-gray-600 mb-4">Sessões: {course.sessions.length}</p>
                 <button
-                  className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+                  className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200"
                   onClick={() => setSelectedCourse(course)}
                 >
                   Ver Curso
