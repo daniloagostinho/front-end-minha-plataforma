@@ -2,9 +2,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaTrashAlt } from 'react-icons/fa'; // Importa o ícone de lixeira
-import CoursePlayer from './CoursePlayer.js';
-import Header from './Header.js'; // Importe o componente de cabeçalho
+import { FaTrashAlt } from 'react-icons/fa';
+import CoursePlayer from './CoursePlayer';
+import Header from './Header';
+import axios from 'axios';
 
 const courses = [
   {
@@ -43,17 +44,36 @@ const courses = [
 ];
 
 const Dashboard = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, setUser, loading } = useContext(AuthContext); // Adicione `setUser` do AuthContext
   const [userCourses, setUserCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && user.enrolledCourses) {
-      const enrolledCourses = courses.filter(course => user.enrolledCourses.includes(course.id));
-      setUserCourses(enrolledCourses);
-    }
-  }, [user]);
+    // Recupera os dados do usuário a partir do backend
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/user', {
+          withCredentials: true, // Inclua cookies na solicitação, se necessário
+        });
+        const userData = response.data;
+        setUser(userData); // Atualize o estado do usuário no AuthContext
+
+        // Filtra os cursos nos quais o usuário está inscrito
+        if (userData.enrolledCourses) {
+          const enrolledCourses = courses.filter(course =>
+            userData.enrolledCourses.includes(course.id)
+          );
+          setUserCourses(enrolledCourses);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados do usuário:', error);
+      }
+    };
+
+    // Chama a função para buscar os dados do usuário
+    fetchUserData();
+  }, [setUser]);
 
   if (loading) {
     return <div className="text-center text-2xl font-semibold mt-20">Carregando...</div>;
@@ -63,15 +83,20 @@ const Dashboard = () => {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header /> {/* Use o componente de cabeçalho */}
       <main className="p-8 sm:p-12 flex-1 flex justify-center items-center">
+        {user && (
+          <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
+            Bem-vindo, {user.nome}! {/* Exibe o nome do usuário */}
+          </h1>
+        )}
         {userCourses.length > 0 && (
-          <h1 className="text-4xl font-extrabold text-gray-800 mb-6">Meus Cursos</h1>
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Meus Cursos</h2>
         )}
         {selectedCourse ? (
           <CoursePlayer course={selectedCourse} />
         ) : (
           userCourses.length === 0 ? (
             <div className="flex flex-col justify-center items-center text-center" style={{ minHeight: '60vh' }}>
-              <FaTrashAlt className="text-6xl text-gray-400 mb-4" /> {/* Ícone de lixeira centralizado */}
+              <FaTrashAlt className="text-6xl text-gray-400 mb-4" />
               <p className="text-gray-600 text-lg mb-6">
                 Você ainda não está inscrito em nenhum curso. Explore nossos cursos disponíveis para começar sua jornada de aprendizado!
               </p>
