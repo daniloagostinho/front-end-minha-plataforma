@@ -40,7 +40,7 @@ const Checkout = () => {
     if (paymentId && isPaymentPending) {
       const interval = setInterval(async () => {
         try {
-          const response = await fetch(`https://67b8-2804-431-cff2-1561-4475-6552-c37-a464.ngrok-free.app/v1/webhook/api/pagamento/status/${paymentId}`);
+          const response = await fetch(`https://67b8-2804-431-cff2-1561-4475-6552-c37-a464.ngrok-free.app/api/pagamento/status/${paymentId}`);
           const data = await response.json();
           if (data.status === 'approved') {
             setPaymentStatus('Pagamento realizado com sucesso!');
@@ -71,7 +71,7 @@ const Checkout = () => {
           descricao: course.title,
         };
 
-        const response = await fetch('https://67b8-2804-431-cff2-1561-4475-6552-c37-a464.ngrok-free.app/v1/webhook/api/pagamento/pix', {
+        const response = await fetch('https://67b8-2804-431-cff2-1561-4475-6552-c37-a464.ngrok-free.app/api/pagamento/pix', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
