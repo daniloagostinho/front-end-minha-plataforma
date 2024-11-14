@@ -11,6 +11,47 @@ const SignUp = () => {
           Acesse nossa plataforma e comece sua jornada no mundo da programação!
         </p>
 
+        <form className="space-y-4">
+          <label className="block">
+            <span className="text-gray-700">Nome Completo</span>
+            <input
+              type="text"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+              placeholder="Digite seu nome"
+              required
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-gray-700">Email</span>
+            <input
+              type="email"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+              placeholder="Digite seu email"
+              required
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-gray-700">Senha</span>
+            <input
+              type="password"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+              placeholder="Digite sua senha"
+              required
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="w-full bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200"
+          >
+            Inscrever-se
+          </button>
+        </form>
+
+        <br />
+
         {/* Botão de Login com Google */}
         <button
           onClick={() => window.location.href = 'https://back-end-minha-plataforma-app.vercel.app/auth/google'}
