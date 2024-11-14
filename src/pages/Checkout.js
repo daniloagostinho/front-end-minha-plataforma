@@ -9,6 +9,7 @@ const Checkout = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('creditCard');
   const [qrCodeBase64, setQrCodeBase64] = useState(null);
   const [pixCopyCode, setPixCopyCode] = useState(null); // Adiciona uma variável para o código Pix
+  const [copySuccess, setCopySuccess] = useState(''); // Estado para o feedback de cópia
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -57,6 +58,18 @@ const Checkout = () => {
     } else {
       setQrCodeBase64(null); // Limpa o QR Code se não for Pix
       setPixCopyCode(null); // Limpa o código Pix se não for Pix
+      setCopySuccess(''); // Limpa o feedback de cópia
+    }
+  };
+
+  const handleCopyPixCode = () => {
+    if (pixCopyCode) {
+      navigator.clipboard.writeText(pixCopyCode).then(() => {
+        setCopySuccess('Código copiado com sucesso!');
+        setTimeout(() => setCopySuccess(''), 3000); // Limpa o feedback após 3 segundos
+      }).catch(() => {
+        setCopySuccess('Erro ao copiar o código. Tente novamente.');
+      });
     }
   };
 
@@ -122,12 +135,23 @@ const Checkout = () => {
             {pixCopyCode && (
               <div className="mt-4">
                 <p className="text-gray-700">Código para copiar e colar:</p>
-                <input
-                  type="text"
-                  value={pixCopyCode}
-                  readOnly
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    value={pixCopyCode}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                  <button
+                    onClick={handleCopyPixCode}
+                    className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200"
+                  >
+                    Copiar
+                  </button>
+                </div>
+                {copySuccess && (
+                  <p className="text-green-500 mt-2">{copySuccess}</p> // Feedback de cópia
+                )}
               </div>
             )}
           </div>
