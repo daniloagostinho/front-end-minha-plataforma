@@ -8,43 +8,56 @@ import { AuthContext } from '../context/AuthContext';
 const Checkout = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('creditCard');
   const [qrCodeBase64, setQrCodeBase64] = useState(null);
-  const [pixCopyCode, setPixCopyCode] = useState(null); // Código Pix para copiar
-  const [copySuccess, setCopySuccess] = useState(''); // Feedback de cópia
-  const [paymentStatus, setPaymentStatus] = useState(''); // Status do pagamento
+  const [pixCopyCode, setPixCopyCode] = useState(null);
+  const [copySuccess, setCopySuccess] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('');
+  const [paymentId, setPaymentId] = useState(null);
+  const [isPaymentPending, setIsPaymentPending] = useState(false); // Novo estado para verificar se o pagamento está pendente
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
   const course = location.state?.course;
-  const [paymentId, setPaymentId] = useState(null); // ID do pagamento para verificar status
 
+  // Formatar o preço
+  const formattedPrice = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(course.price);
+
+  // Resetar QR code, código Pix e estado de pagamento ao mudar o valor do curso
   useEffect(() => {
-    if (paymentId) {
+    setQrCodeBase64(null);
+    setPixCopyCode(null);
+    setCopySuccess('');
+    setPaymentStatus('');
+    setPaymentId(null);
+    setIsPaymentPending(false); // Resetar o estado de pagamento pendente
+  }, [course.price]);
+
+  // Polling para verificar o status do pagamento
+  useEffect(() => {
+    // Inicia o polling apenas se o pagamento estiver pendente
+    if (paymentId && isPaymentPending) {
       const interval = setInterval(async () => {
         try {
           const response = await fetch(`http://localhost:5000/api/pagamento/status/${paymentId}`);
           const data = await response.json();
           if (data.status === 'approved') {
             setPaymentStatus('Pagamento realizado com sucesso!');
-            clearInterval(interval); // Para o polling quando o pagamento for aprovado
+            setIsPaymentPending(false); // Parar o polling
+            clearInterval(interval);
           }
         } catch (error) {
           console.error('Erro ao verificar o status do pagamento:', error);
         }
-      }, 5000); // Verifica o status a cada 5 segundos
+      }, 5000);
 
-      return () => clearInterval(interval); // Limpa o intervalo ao desmontar o componente
+      // Limpa o intervalo quando o componente desmonta ou o paymentId muda
+      return () => clearInterval(interval);
     }
-  }, [paymentId]);
+  }, [paymentId, isPaymentPending]);
 
-  // Se `course` não estiver disponível, exiba uma mensagem de erro ou carregamento
-  if (!course) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-gray-600 text-lg">Curso não encontrado. Por favor, tente novamente.</p>
-      </div>
-    );
-  }
-
+  // Função para lidar com a troca de método de pagamento
   const handlePaymentMethodChange = async (method) => {
     setSelectedPaymentMethod(method);
 
@@ -52,7 +65,7 @@ const Checkout = () => {
       const valor = parseFloat(course.price).toFixed(2);
       try {
         const paymentData = {
-          valor: valor,
+          valor,
           email: user?.email || 'email@padrao.com',
           nome: user?.name || 'Nome Padrão',
           descricao: course.title,
@@ -70,7 +83,8 @@ const Checkout = () => {
         if (data.response && data.response.point_of_interaction) {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
-          setPaymentId(data.response.id); // Salva o ID do pagamento para verificar o status
+          setPaymentId(data.response.id); // Define o ID do pagamento
+          setIsPaymentPending(true); // Inicia o polling, pois o pagamento está pendente
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
         }
@@ -82,9 +96,12 @@ const Checkout = () => {
       setPixCopyCode(null);
       setCopySuccess('');
       setPaymentStatus('');
+      setPaymentId(null);
+      setIsPaymentPending(false); // Parar o polling
     }
   };
 
+  // Função para copiar o código Pix
   const handleCopyPixCode = () => {
     if (pixCopyCode) {
       navigator.clipboard.writeText(pixCopyCode).then(() => {
@@ -105,7 +122,7 @@ const Checkout = () => {
         <div className="mb-4">
           <h2 className="text-xl font-semibold text-gray-700">Resumo do Pedido</h2>
           <p className="text-gray-600"><b>Curso:</b> {course.title}</p>
-          <p className="text-gray-600"><b>Valor:</b> R$ {course.price}</p>
+          <p className="text-gray-600"><b>Valor:</b> {formattedPrice}</p>
         </div>
 
         <div className="mb-6">
@@ -113,27 +130,21 @@ const Checkout = () => {
           <div className="flex space-x-4">
             <button
               onClick={() => handlePaymentMethodChange('creditCard')}
-              className={`flex items-center p-4 border rounded-md ${
-                selectedPaymentMethod === 'creditCard' ? 'border-primary bg-gray-100' : 'border-gray-300'
-              }`}
+              className={`flex items-center p-4 border rounded-md ${selectedPaymentMethod === 'creditCard' ? 'border-primary bg-gray-100' : 'border-gray-300'}`}
             >
               <FaCreditCard className="text-2xl text-gray-700 mr-2" />
               <span className="text-gray-700 font-semibold">Cartão de Crédito</span>
             </button>
             <button
               onClick={() => handlePaymentMethodChange('paypal')}
-              className={`flex items-center p-4 border rounded-md ${
-                selectedPaymentMethod === 'paypal' ? 'border-primary bg-gray-100' : 'border-gray-300'
-              }`}
+              className={`flex items-center p-4 border rounded-md ${selectedPaymentMethod === 'paypal' ? 'border-primary bg-gray-100' : 'border-gray-300'}`}
             >
               <FaPaypal className="text-2xl text-gray-700 mr-2" />
               <span className="text-gray-700 font-semibold">PayPal</span>
             </button>
             <button
               onClick={() => handlePaymentMethodChange('pix')}
-              className={`flex items-center p-4 border rounded-md ${
-                selectedPaymentMethod === 'pix' ? 'border-primary bg-gray-100' : 'border-gray-300'
-              }`}
+              className={`flex items-center p-4 border rounded-md ${selectedPaymentMethod === 'pix' ? 'border-primary bg-gray-100' : 'border-gray-300'}`}
             >
               <SiPix className="text-2xl text-gray-700 mr-2" />
               <span className="text-gray-700 font-semibold">Pix</span>
