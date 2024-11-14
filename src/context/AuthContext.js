@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // Adiciona o estado de loading
 
   useEffect(() => {
-    fetch('https://back-end-minha-plataforma-app.vercel.app/api/current_user', {
+    fetch('https://67b8-2804-431-cff2-1561-4475-6552-c37-a464.ngrok-free.app/v1/webhook/api/current_user', {
       credentials: 'include'
     })
       .then(response => response.json())

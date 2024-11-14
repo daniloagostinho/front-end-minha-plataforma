@@ -13,7 +13,7 @@ const SignUp = () => {
 
         {/* Botão de Login com Google */}
         <button
-          onClick={() => window.location.href = 'https://back-end-minha-plataforma-app.vercel.app/auth/google'}
+          onClick={() => window.location.href = 'https://67b8-2804-431-cff2-1561-4475-6552-c37-a464.ngrok-free.app/v1/webhook/auth/google'}
           className="w-full flex items-center justify-center bg-white border border-gray-300 rounded-md px-4 py-2 shadow-sm hover:shadow-md transition duration-200"
         >
           <FcGoogle className="text-2xl mr-3" />
