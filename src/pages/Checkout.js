@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FaCreditCard, FaPaypal } from 'react-icons/fa';
 import { SiPix } from 'react-icons/si';
 import { useLocation } from 'react-router-dom';
@@ -8,12 +8,33 @@ import { AuthContext } from '../context/AuthContext';
 const Checkout = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('creditCard');
   const [qrCodeBase64, setQrCodeBase64] = useState(null);
-  const [pixCopyCode, setPixCopyCode] = useState(null); // Adiciona uma variável para o código Pix
-  const [copySuccess, setCopySuccess] = useState(''); // Estado para o feedback de cópia
+  const [pixCopyCode, setPixCopyCode] = useState(null); // Código Pix para copiar
+  const [copySuccess, setCopySuccess] = useState(''); // Feedback de cópia
+  const [paymentStatus, setPaymentStatus] = useState(''); // Status do pagamento
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
   const course = location.state?.course;
+  const [paymentId, setPaymentId] = useState(null); // ID do pagamento para verificar status
+
+  useEffect(() => {
+    if (paymentId) {
+      const interval = setInterval(async () => {
+        try {
+          const response = await fetch(`http://localhost:5000/api/pagamento/status/${paymentId}`);
+          const data = await response.json();
+          if (data.status === 'approved') {
+            setPaymentStatus('Pagamento realizado com sucesso!');
+            clearInterval(interval); // Para o polling quando o pagamento for aprovado
+          }
+        } catch (error) {
+          console.error('Erro ao verificar o status do pagamento:', error);
+        }
+      }, 5000); // Verifica o status a cada 5 segundos
+
+      return () => clearInterval(interval); // Limpa o intervalo ao desmontar o componente
+    }
+  }, [paymentId]);
 
   // Se `course` não estiver disponível, exiba uma mensagem de erro ou carregamento
   if (!course) {
@@ -48,7 +69,8 @@ const Checkout = () => {
         const data = await response.json();
         if (data.response && data.response.point_of_interaction) {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
-          setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code); // Define o código Pix para copiar
+          setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
+          setPaymentId(data.response.id); // Salva o ID do pagamento para verificar o status
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
         }
@@ -56,9 +78,10 @@ const Checkout = () => {
         console.error('Erro ao gerar pagamento Pix:', error);
       }
     } else {
-      setQrCodeBase64(null); // Limpa o QR Code se não for Pix
-      setPixCopyCode(null); // Limpa o código Pix se não for Pix
-      setCopySuccess(''); // Limpa o feedback de cópia
+      setQrCodeBase64(null);
+      setPixCopyCode(null);
+      setCopySuccess('');
+      setPaymentStatus('');
     }
   };
 
@@ -66,7 +89,7 @@ const Checkout = () => {
     if (pixCopyCode) {
       navigator.clipboard.writeText(pixCopyCode).then(() => {
         setCopySuccess('Código copiado com sucesso!');
-        setTimeout(() => setCopySuccess(''), 3000); // Limpa o feedback após 3 segundos
+        setTimeout(() => setCopySuccess(''), 3000);
       }).catch(() => {
         setCopySuccess('Erro ao copiar o código. Tente novamente.');
       });
@@ -127,7 +150,7 @@ const Checkout = () => {
                 src={`data:image/png;base64,${qrCodeBase64}`}
                 alt="QR Code Pix"
                 className="mx-auto"
-                style={{ width: '200px', height: '200px' }} // Define o tamanho do QR Code
+                style={{ width: '200px', height: '200px' }}
               />
             ) : (
               <p className="text-gray-700 font-semibold">Carregando QR Code...</p>
@@ -150,10 +173,16 @@ const Checkout = () => {
                   </button>
                 </div>
                 {copySuccess && (
-                  <p className="text-green-500 mt-2">{copySuccess}</p> // Feedback de cópia
+                  <p className="text-green-500 mt-2">{copySuccess}</p>
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {paymentStatus && (
+          <div className="mt-6">
+            <p className="text-green-500 font-semibold text-lg">{paymentStatus}</p>
           </div>
         )}
 
