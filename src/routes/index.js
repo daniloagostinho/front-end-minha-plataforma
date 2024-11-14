@@ -9,6 +9,7 @@ import Courses from '../pages/Courses';
 
 import CourseDetails from '../pages/CourseDetails'
 import CoursePlayer from '../pages/CoursePlayer';
+import Checkout from '../pages/Checkout';
 
 const AppRoutes = () => {
     return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
                 {/* <Route path="/course/:courseId" element={<CourseDetails />} /> */}
                 <Route path="/course/:id" element={<CourseDetails />} />
                 <Route path="/coursePlayer" element={<CoursePlayer />} />
+                <Route path="/checkout" element={<Checkout />} />
             </Routes>
         </Router>
     );

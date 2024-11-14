@@ -2,14 +2,18 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
+import { FaCreditCard, FaPaypal } from 'react-icons/fa'; // Importando ícones de pagamento
+import { SiPix } from 'react-icons/si'; // Ícone do Pix
 import { initialCourses } from '../data/coursesData';
 import Navbar from '../components/Navbar';
-
+import { useNavigate } from 'react-router-dom';
 
 
 const CourseDetails = () => {
   const { id } = useParams();
   const courseId = parseInt(id, 10); // Converte o ID da URL para um número
+  const navigate = useNavigate();
+
 
   // Procura o curso pelo ID
   const course = Object.values(initialCourses)
@@ -71,10 +75,19 @@ const CourseDetails = () => {
           ))}
         </div>
 
-        {/* Botão de Inscrição */}
-        <div className="text-center">
-          <button className="bg-primary text-white font-semibold px-6 py-3 rounded-md hover:bg-secondary transition duration-200">
-            Inscrever-se no Curso
+        {/* Seção de Valor do Curso */}
+        <div className="bg-white rounded-md shadow-md p-6 text-center">
+          <h2 className="text-2xl font-bold mb-4">Valor do Curso</h2>
+          <p className="text-gray-800 text-xl font-semibold mb-4">R$ 16,90</p>
+          <div className="flex justify-center space-x-4 mb-4">
+            <FaCreditCard className="text-3xl text-gray-600" />
+            <FaPaypal className="text-3xl text-gray-600" />
+            <SiPix className="text-3xl text-gray-600" /> {/* Ícone do Pix */}
+          </div>
+          <button className="bg-green-600 text-white font-bold w-full md:w-1/2 px-6 py-4 rounded-lg hover:bg-green-700 transition duration-200"
+            onClick={() => navigate('/checkout')}
+          >
+            Comprar
           </button>
         </div>
       </main>
