@@ -69,7 +69,7 @@ const Checkout = () => {
           email: user?.email || 'email@padrao.com',
           nome: user?.name || 'Nome Padrão',
           descricao: course.title,
-          notificaction_url: ""
+          notificaction_url: "https://back-end-minha-plataforma-app.vercel.app/webhook"
         };
 
         const response = await fetch('http://localhost:5000/api/pagamento/pix', {
