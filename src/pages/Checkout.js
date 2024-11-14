@@ -40,7 +40,7 @@ const Checkout = () => {
     if (paymentId && isPaymentPending) {
       const interval = setInterval(async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/pagamento/status/${paymentId}`);
+          const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/api/pagamento/status/${paymentId}`);
           const data = await response.json();
           if (data.status === 'approved') {
             setPaymentStatus('Pagamento realizado com sucesso!');
@@ -71,7 +71,7 @@ const Checkout = () => {
           descricao: course.title,
         };
 
-        const response = await fetch('http://localhost:5000/api/pagamento/pix', {
+        const response = await fetch('https://back-end-minha-plataforma-app.vercel.app/api/pagamento/pix', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
