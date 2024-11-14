@@ -20,6 +20,17 @@ const CourseDetails = () => {
     .flat()
     .find(course => course.id === courseId);
 
+  const handleBuyCourse = () => {
+    // Navega para o Checkout e passa o curso como estado
+    navigate('/checkout', { state: { course } });
+  };
+
+  const formattedPrice = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(course.price);
+
+
   if (!course) {
     return <div className="text-center mt-12">Curso não encontrado.</div>;
   }
@@ -78,14 +89,14 @@ const CourseDetails = () => {
         {/* Seção de Valor do Curso */}
         <div className="bg-white rounded-md shadow-md p-6 text-center">
           <h2 className="text-2xl font-bold mb-4">Valor do Curso</h2>
-          <p className="text-gray-800 text-xl font-semibold mb-4">R$ 16,90</p>
+          <p className="text-gray-800 text-xl font-semibold mb-4">{formattedPrice}</p>
           <div className="flex justify-center space-x-4 mb-4">
             <FaCreditCard className="text-3xl text-gray-600" />
             <FaPaypal className="text-3xl text-gray-600" />
             <SiPix className="text-3xl text-gray-600" /> {/* Ícone do Pix */}
           </div>
           <button className="bg-green-600 text-white font-bold w-full md:w-1/2 px-6 py-4 rounded-lg hover:bg-green-700 transition duration-200"
-            onClick={() => navigate('/checkout')}
+            onClick={handleBuyCourse}
           >
             Comprar
           </button>

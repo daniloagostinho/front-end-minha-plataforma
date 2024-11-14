@@ -25,7 +25,8 @@ export const initialCourses = {
             lessons: ['Criando componentes', 'Props e estado']
           }
         ],
-        image: reactImage
+        image: reactImage,
+        price: 16.90
       },
       {
         id: 2,
@@ -43,7 +44,8 @@ export const initialCourses = {
             lessons: ['Usando diretivas', 'Criando serviços']
           }
         ],
-        image: angularImage
+        image: angularImage,
+        price: 16.90
       },
       {
         id: 2,
@@ -61,7 +63,8 @@ export const initialCourses = {
             lessons: ['Usando diretivas', 'Criando serviços']
           }
         ],
-        image: vueImage
+        image: vueImage,
+        price: 16.90
       }
     ],
     "Back-end": [
@@ -81,7 +84,8 @@ export const initialCourses = {
             lessons: ['Criando rotas', 'Trabalhando com bancos de dados']
           }
         ],
-        image: nodeImage
+        image: nodeImage,
+        price: 16.90
       },
       // Adicione os outros cursos da mesma forma...
     ]
@@ -105,7 +109,8 @@ export const initialCourses = {
             lessons: ['Criando imagens', 'Gerenciando contêineres']
           }
         ],
-        image: devopsImage
+        image: devopsImage,
+        price: 16.90
       },
       // Adicione os outros cursos da mesma forma...
     ]
