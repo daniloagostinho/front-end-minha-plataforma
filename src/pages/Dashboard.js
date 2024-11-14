@@ -82,12 +82,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header /> {/* Use o componente de cabeçalho */}
-      <main className="p-8 sm:p-12 flex-1 flex justify-center items-center">
-        {user && (
-          <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
-            Bem-vindo, {user.nome}! {/* Exibe o nome do usuário */}
-          </h1>
-        )}
+      <main className="p-8 sm:p-12 items-center">
         {userCourses.length > 0 && (
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Meus Cursos</h2>
         )}
@@ -96,7 +91,11 @@ const Dashboard = () => {
         ) : (
           userCourses.length === 0 ? (
             <div className="flex flex-col justify-center items-center text-center" style={{ minHeight: '60vh' }}>
-              <FaTrashAlt className="text-6xl text-gray-400 mb-4" />
+              {user && (
+                <h1 className="text-4xl font-extrabold text-gray-800 mb-6 flex flex-col justify-center items-center text-center">
+                  Bem-vindo, {user.nome}! {/* Exibe o nome do usuário */}
+                </h1>
+              )}
               <p className="text-gray-600 text-lg mb-6">
                 Você ainda não está inscrito em nenhum curso. Explore nossos cursos disponíveis para começar sua jornada de aprendizado!
               </p>
