@@ -11,8 +11,6 @@ const Checkout = () => {
   const [pixCopyCode, setPixCopyCode] = useState(null);
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('');
-  const [paymentId, setPaymentId] = useState(null);
-  const [isPaymentPending, setIsPaymentPending] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a Modal
   const location = useLocation();
   const { user } = useContext(AuthContext);
@@ -31,31 +29,7 @@ const Checkout = () => {
     setPixCopyCode(null);
     setCopySuccess('');
     setPaymentStatus('');
-    setPaymentId(null);
-    setIsPaymentPending(false);
   }, [course.price]);
-
-  // Polling para verificar o status do pagamento
-  useEffect(() => {
-    if (paymentId && isPaymentPending) {
-      const interval = setInterval(async () => {
-        try {
-          const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/api/pagamento/status/${paymentId}`);
-          const data = await response.json();
-          if (data.status === 'approved') {
-            setPaymentStatus('Pagamento realizado com sucesso!');
-            setIsPaymentPending(false);
-            setIsModalOpen(true); // Abrir a Modal ao receber o status aprovado
-            clearInterval(interval);
-          }
-        } catch (error) {
-          console.error('Erro ao verificar o status do pagamento:', error);
-        }
-      }, 5000);
-
-      return () => clearInterval(interval);
-    }
-  }, [paymentId, isPaymentPending]);
 
   // Função para lidar com a troca de método de pagamento
   const handlePaymentMethodChange = async (method) => {
@@ -84,8 +58,6 @@ const Checkout = () => {
         if (data.response && data.response.point_of_interaction) {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
-          setPaymentId(data.response.id);
-          setIsPaymentPending(true);
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
         }
@@ -97,8 +69,6 @@ const Checkout = () => {
       setPixCopyCode(null);
       setCopySuccess('');
       setPaymentStatus('');
-      setPaymentId(null);
-      setIsPaymentPending(false);
     }
   };
 
