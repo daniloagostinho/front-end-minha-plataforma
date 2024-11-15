@@ -5,6 +5,7 @@ import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SpinnerLoading from '../components/SpinnerLoading'; // Importando o Spinner
+import CreditCardForm from '../components/CreditCardForm'; // Importando o Spinner
 import { AuthContext } from '../context/AuthContext';
 
 const Checkout = () => {
@@ -18,6 +19,8 @@ const Checkout = () => {
   const [isLoading, setIsLoading] = useState(false); // Controla o carregamento
   const location = useLocation();
   const { user } = useContext(AuthContext);
+  const [showCreditCardForm, setShowCreditCardForm] = useState(false);
+
 
   const course = location.state?.course;
 
@@ -226,9 +229,7 @@ const Checkout = () => {
                 )}
               </div>
             )}
-            {selectedPaymentMethod === 'creditCard' && (
-              <CreditCardForm onConfirm={() => console.log('Pagamento Confirmado')} />
-            )}
+            {showCreditCardForm && <CreditCardForm />}
           </>
         )}
       </div>
