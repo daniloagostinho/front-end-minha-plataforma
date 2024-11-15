@@ -82,11 +82,7 @@ const Checkout = () => {
     if (!paymentId) return;
 
     try {
-      const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_MERCADO_PAGO_ACCESS_TOKEN}`, // Use sua chave de API do Mercado Pago
-        },
-      });
+      const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/api/pagamento/status/${paymentId}`); // TODO
       const data = await response.json();
 
       if (response.ok) {
