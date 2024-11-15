@@ -12,7 +12,7 @@ const Checkout = () => {
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('');
   const [paymentId, setPaymentId] = useState(null);
-  const [isPaymentPending, setIsPaymentPending] = useState(false); // Novo estado para verificar se o pagamento está pendente
+  const [isPaymentPending, setIsPaymentPending] = useState(false);
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -31,12 +31,11 @@ const Checkout = () => {
     setCopySuccess('');
     setPaymentStatus('');
     setPaymentId(null);
-    setIsPaymentPending(false); // Resetar o estado de pagamento pendente
+    setIsPaymentPending(false);
   }, [course.price]);
 
   // Polling para verificar o status do pagamento
   useEffect(() => {
-    // Inicia o polling apenas se o pagamento estiver pendente
     if (paymentId && isPaymentPending) {
       const interval = setInterval(async () => {
         try {
@@ -44,7 +43,7 @@ const Checkout = () => {
           const data = await response.json();
           if (data.status === 'approved') {
             setPaymentStatus('Pagamento realizado com sucesso!');
-            setIsPaymentPending(false); // Parar o polling
+            setIsPaymentPending(false);
             clearInterval(interval);
           }
         } catch (error) {
@@ -52,7 +51,6 @@ const Checkout = () => {
         }
       }, 5000);
 
-      // Limpa o intervalo quando o componente desmonta ou o paymentId muda
       return () => clearInterval(interval);
     }
   }, [paymentId, isPaymentPending]);
@@ -67,9 +65,9 @@ const Checkout = () => {
         const paymentData = {
           valor,
           email: user?.email || 'email@padrao.com',
-          nome: user?.name || 'Nome Padrão',
+          nome: user?.nome || 'Nome Padrão',
           descricao: course.title,
-          notificaction_url: "http://localhost:5000/webhook"
+          notification_url: "http://localhost:5000/webhook"
         };
 
         const response = await fetch('http://localhost:5000/api/pagamento/pix', {
@@ -84,8 +82,8 @@ const Checkout = () => {
         if (data.response && data.response.point_of_interaction) {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
-          setPaymentId(data.response.id); // Define o ID do pagamento
-          setIsPaymentPending(true); // Inicia o polling, pois o pagamento está pendente
+          setPaymentId(data.response.id);
+          setIsPaymentPending(true);
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
         }
@@ -98,7 +96,7 @@ const Checkout = () => {
       setCopySuccess('');
       setPaymentStatus('');
       setPaymentId(null);
-      setIsPaymentPending(false); // Parar o polling
+      setIsPaymentPending(false);
     }
   };
 
