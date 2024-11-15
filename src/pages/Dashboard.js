@@ -1,79 +1,30 @@
 // src/pages/Dashboard.js
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FaTrashAlt } from 'react-icons/fa';
 import CoursePlayer from './CoursePlayer';
 import Header from './Header';
-import axios from 'axios';
 
 const courses = [
-  {
-    id: 1,
-    title: 'Curso de Node.js',
-    sessions: [
-      {
-        title: 'Sessão 1: Conhecendo o Node.js',
-        lessons: [
-          { title: 'Aula 1: Bem-vindo ao Curso', url: 'https://youtu.be/dG12jGHc7jI' },
-          { title: 'Aula 2: Visão Geral do Curso', url: 'https://www.youtube.com/watch?v=S7eQecVPt38' },
-        ],
-      },
-      {
-        title: 'Sessão 2: Instalando o Node.js',
-        lessons: [
-          { title: 'Aula 1: Sobre essa seção', url: 'https://youtu.be/--O53DKCQUo' },
-          { title: 'Aula 2: Baixando e configurando o Node.js', url: 'https://youtu.be/aiN9g8FSBs8' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Curso de React',
-    sessions: [
-      {
-        title: 'Sessão 1: Introdução ao React',
-        lessons: [
-          { title: 'Aula 1: O que é React?', url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8' },
-          { title: 'Aula 2: Configurando o Ambiente', url: 'https://www.youtube.com/watch?v=S7eQecVPt38' },
-        ],
-      },
-    ],
-  },
+  // Seus cursos...
 ];
 
 const Dashboard = () => {
-  const { user, setUser, loading } = useContext(AuthContext); // Adicione `setUser` do AuthContext
+  const { user, loading } = useContext(AuthContext);
   const [userCourses, setUserCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Recupera os dados do usuário a partir do backend
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/user', {
-          withCredentials: true, // Inclua cookies na solicitação, se necessário
-        });
-        const userData = response.data;
-        setUser(userData); // Atualize o estado do usuário no AuthContext
-
-        // Filtra os cursos nos quais o usuário está inscrito
-        if (userData.enrolledCourses) {
-          const enrolledCourses = courses.filter(course =>
-            userData.enrolledCourses.includes(course.id)
-          );
-          setUserCourses(enrolledCourses);
-        }
-      } catch (error) {
-        console.error('Erro ao buscar dados do usuário:', error);
-      }
-    };
-
-    // Chama a função para buscar os dados do usuário
-    fetchUserData();
-  }, [setUser]);
+    if (user && user.enrolledCourses) {
+      // Filtra os cursos nos quais o usuário está inscrito
+      const enrolledCourses = courses.filter(course =>
+        user.enrolledCourses.includes(course.id)
+      );
+      setUserCourses(enrolledCourses);
+    }
+  }, [user]);
 
   if (loading) {
     return <div className="text-center text-2xl font-semibold mt-20">Carregando...</div>;
@@ -81,8 +32,13 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header /> {/* Use o componente de cabeçalho */}
+      <Header />
       <main className="p-8 sm:p-12 items-center">
+        {user && (
+          <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
+            Bem-vindo, {user.nome}!
+          </h1>
+        )}
         {userCourses.length > 0 && (
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Meus Cursos</h2>
         )}
@@ -91,11 +47,7 @@ const Dashboard = () => {
         ) : (
           userCourses.length === 0 ? (
             <div className="flex flex-col justify-center items-center text-center" style={{ minHeight: '60vh' }}>
-              {user && (
-                <h1 className="text-4xl font-extrabold text-gray-800 mb-6 flex flex-col justify-center items-center text-center">
-                  Bem-vindo, {user.nome}! {/* Exibe o nome do usuário */}
-                </h1>
-              )}
+              <FaTrashAlt className="text-6xl text-gray-400 mb-4" />
               <p className="text-gray-600 text-lg mb-6">
                 Você ainda não está inscrito em nenhum curso. Explore nossos cursos disponíveis para começar sua jornada de aprendizado!
               </p>

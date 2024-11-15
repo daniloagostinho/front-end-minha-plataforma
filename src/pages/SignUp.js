@@ -24,9 +24,17 @@ const SignUp = () => {
         senha,
       });
 
+      // Corrija a extração do token da resposta
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem('token', token); // Armazene o token no localStorage
+      } else {
+        throw new Error('Token não fornecido pelo servidor.');
+      }
+
       setMensagem('Usuário cadastrado com sucesso!');
       setTimeout(() => {
-        navigate('/login'); // Redireciona para a página de login
+        navigate('/login'); // Redirecione para a página de login
       }, 3000);
     } catch (error) {
       setMensagem(error.response?.data?.error || 'Erro ao realizar o cadastro. Tente novamente.');

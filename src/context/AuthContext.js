@@ -1,3 +1,4 @@
+// src/context/AuthContext.js
 import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -31,18 +32,22 @@ export const AuthProvider = ({ children }) => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
 
-      if (token) {
-        try {
-          const response = await axios.get('http://localhost:5000/api/user', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setUser(response.data);
-        } catch (error) {
-          console.error('Erro ao buscar dados do usuário:', error);
-          logout();
-        }
+      if (!token) {
+        setLoading(false);
+        return; // Se não houver token, não fazer a requisição
       }
-      setLoading(false);
+
+      try {
+        const response = await axios.get('http://localhost:5000/api/user', {
+          headers: { Authorization: `Bearer ${token}` }, // Enviar o token no header
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar dados do usuário:', error);
+        logout();
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchUserData();
