@@ -17,6 +17,41 @@ const CreditCardForm = ({ onConfirm }) => {
     setCardNumber(formatCardNumber(e.target.value));
   };
 
+  const handleConfirmPayment = async () => {
+    // Aqui você pode formatar e enviar os dados para o backend
+    const paymentData = {
+      cardNumber,
+      cardName,
+      expiryDate,
+      cvv,
+      installments,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/pagamento/cartao', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert('Pagamento realizado com sucesso!');
+        if (onConfirm) {
+          onConfirm(result);
+        }
+      } else {
+        alert('Erro ao processar o pagamento: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Erro ao processar o pagamento:', error);
+      alert('Ocorreu um erro ao tentar processar o pagamento.');
+    }
+  };
+
   return (
     <div className="w-full p-4">
       {/* Cartão de Crédito Visível */}
@@ -106,7 +141,7 @@ const CreditCardForm = ({ onConfirm }) => {
         </div>
         <button
           type="button"
-          onClick={onConfirm}
+          onClick={handleConfirmPayment}
           className="w-full bg-indigo-500 text-white font-bold py-2 rounded-lg transition-colors duration-300 hover:bg-indigo-600"
         >
           Confirmar Pagamento
