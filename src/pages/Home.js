@@ -24,39 +24,39 @@ const Home = () => {
       <Navbar />
       {/* Hero Section */}
       <header
-        className="relative text-white py-16 bg-black"
+        className="relative text-white py-16 bg-gradient-to-r from-purple-500 bg-primary"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 1000 1000' fill='none' stroke='%23ffffff' stroke-width='0.5'%3E%3Cpath d='M0,500 Q250,0 500,500 T1000,500'/%3E%3Cpath d='M0,700 Q250,200 500,700 T1000,700'/%3E%3Cpath d='M0,900 Q250,400 500,900 T1000,900'/%3E%3C/svg%3E")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
-  {/* Texto do Título Alinhado à Esquerda */}
-  <div className="md:w-1/2 text-left space-y-4">
-    <h1 className="text-5xl md:text-6xl font-bold leading-tight break-words bg-clip-text">
-      Aprenda Programação e <br className="hidden md:block" /> Transforme Sua Carreira
-    </h1>
-    <p className="mt-2 text-lg">
-      Cursos de tecnologia acessíveis para pessoas de baixa renda. Venha aprender e melhorar sua qualidade de vida com nossos cursos.
-    </p>
-    {/* Botão de Inscreva-se Grátis */}
-    <button
-      className="mt-6 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-10 rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
-      onClick={() => navigate('/signup')}
-    >
-      Inscreva-se Grátis
-    </button>
-  </div>
-  {/* Imagem do Lado Direito */}
-  <div className="hidden md:flex md:w-1/2 mt-8 md:mt-0 justify-center">
-    <img
-      src={heroImage}
-      alt="Imagem de Programação"
-      className="w-full h-auto rounded-md shadow-lg"
-    />
-  </div>
-</div>
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
+          {/* Texto do Título Alinhado à Esquerda */}
+          <div className="md:w-1/2 text-left space-y-4">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight break-words bg-clip-text">
+              Aprenda Programação e <br className="hidden md:block" /> Transforme Sua Carreira
+            </h1>
+            <p className="mt-2 text-lg">
+              Cursos de tecnologia acessíveis para pessoas de baixa renda. Venha aprender e melhorar sua qualidade de vida com nossos cursos.
+            </p>
+            {/* Botão de Inscreva-se Grátis */}
+            <button
+              className="mt-6 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-10 rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
+              onClick={() => navigate('/signup')}
+            >
+              Inscreva-se Grátis
+            </button>
+          </div>
+          {/* Imagem do Lado Direito */}
+          <div className="hidden md:flex md:w-1/2 mt-8 md:mt-0 justify-center">
+            <img
+              src={heroImage}
+              alt="Imagem de Programação"
+              className="w-full h-auto rounded-md shadow-lg"
+            />
+          </div>
+        </div>
 
       </header>
 
@@ -135,7 +135,7 @@ const Home = () => {
 
       {/* Call to Action Section */}
       <section
-        className="py-16 text-center bg-black"
+        className="py-16 text-center bg-gradient-to-r from-purple-500 bg-primary"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 1000 1000' fill='none' stroke='%23ffffff' stroke-width='0.5'%3E%3Cpath d='M0,500 Q250,0 500,500 T1000,500'/%3E%3Cpath d='M0,700 Q250,200 500,700 T1000,700'/%3E%3Cpath d='M0,900 Q250,400 500,900 T1000,900'/%3E%3C/svg%3E")`,
           backgroundSize: 'cover',

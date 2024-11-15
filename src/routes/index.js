@@ -25,6 +25,7 @@ const AppRoutes = () => {
                 <Route path="/course/:id" element={<CourseDetails />} />
                 <Route path="/coursePlayer" element={<CoursePlayer />} />
                 <Route path="/checkout" element={<Checkout />} />
+                {/* <Route path="/sobre" element={<Checkout />} /> */}
 {/* 
                 <Route path="/sucesso" component={Sucesso} />
                 <Route path="/fracasso" component={Fracasso} />
