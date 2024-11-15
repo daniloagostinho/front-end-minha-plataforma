@@ -2,7 +2,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaTrashAlt } from 'react-icons/fa';
 import CoursePlayer from './CoursePlayer';
 import Header from './Header';
 
@@ -47,7 +46,6 @@ const Dashboard = () => {
         ) : (
           userCourses.length === 0 ? (
             <div className="flex flex-col justify-center items-center text-center" style={{ minHeight: '60vh' }}>
-              <FaTrashAlt className="text-6xl text-gray-400 mb-4" />
               <p className="text-gray-600 text-lg mb-6">
                 Você ainda não está inscrito em nenhum curso. Explore nossos cursos disponíveis para começar sua jornada de aprendizado!
               </p>
