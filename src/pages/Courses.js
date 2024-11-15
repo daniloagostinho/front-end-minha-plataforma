@@ -51,7 +51,7 @@ const Courses = () => {
                     className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200"
                     onClick={() => navigate(`/course/${course.id}`)}
                   >
-                    Ver detalhes do curso
+                    Ver curso
                   </button>
                 </div>
               ))}
