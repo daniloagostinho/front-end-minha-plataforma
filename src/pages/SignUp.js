@@ -18,7 +18,7 @@ const SignUp = () => {
     setMensagem('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/signup', {
+      const response = await axios.post('https://back-end-minha-plataforma-app.vercel.app/api/signup', {
         nome,
         email,
         senha,

@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   // Função para realizar login
   const login = async (email, senha) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { email, senha });
+      const response = await axios.post('https://back-end-minha-plataforma-app.vercel.app/api/login', { email, senha });
       const { token, user } = response.data;
 
       // Armazenar o token no localStorage
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/api/user', {
+        const response = await axios.get('https://back-end-minha-plataforma-app.vercel.app/api/user', {
           headers: { Authorization: `Bearer ${token}` }, // Enviar o token no header
         });
         setUser(response.data);
