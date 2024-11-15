@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FaCreditCard, FaPaypal } from 'react-icons/fa';
 import { SiPix } from 'react-icons/si';
+import { AiOutlineCheckCircle } from 'react-icons/ai'; // Ícone de sucesso importado
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SpinnerLoading from '../components/SpinnerLoading'; // Importando o Spinner
@@ -13,8 +14,8 @@ const Checkout = () => {
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [paymentId, setPaymentId] = useState(null);
-  const [shouldCheckStatus, setShouldCheckStatus] = useState(false); // Para controlar o polling
-  const [isLoading, setIsLoading] = useState(true); // Para controlar o carregamento
+  const [shouldCheckStatus, setShouldCheckStatus] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Controla o carregamento
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -136,14 +137,15 @@ const Checkout = () => {
       <Navbar />
       <div className="relative max-w-3xl mx-auto p-4 sm:p-6 bg-white rounded-md shadow-md mt-4 sm:mt-8">
         {isLoading ? (
-          // Exibir o fundo branco desfocado e o spinner
-          <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center rounded-md">
+          // Fundo branco desfocado e spinner centralizado
+          <div className="absolute inset-0 bg-white bg-opacity-80 backdrop-blur-sm flex items-center justify-center rounded-md">
             <SpinnerLoading />
           </div>
         ) : paymentStatus === 'approved' ? (
-          // Exibir mensagem de sucesso
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <h2 className="text-3xl font-bold text-green-500">Pagamento aprovado com sucesso!</h2>
+          // Bloco de sucesso centralizado e estilizado
+          <div className="flex flex-col items-center justify-center space-y-4 mt-20">
+            <AiOutlineCheckCircle className="text-green-500 text-6xl" />
+            <h3 className="text-3xl font-bold text-green-500">Pagamento aprovado com sucesso!</h3>
             <p className="text-gray-700">Você será redirecionado para o dashboard em breve.</p>
           </div>
         ) : (
