@@ -53,11 +53,11 @@ const SignUp = () => {
         <p className="text-neutral text-center mb-6 sm:mb-8">
           Acesse nossa plataforma e comece sua jornada no mundo da programação!
         </p>
-        {mensagem && (
+        {/* {mensagem && (
           <div className="mb-4 text-center text-sm font-medium text-red-500">
             {mensagem}
           </div>
-        )}
+        )} */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
             <span className="text-gray-700">Nome Completo</span>
