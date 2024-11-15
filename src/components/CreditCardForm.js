@@ -18,9 +18,12 @@ const CreditCardForm = ({ onConfirm }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md transition-transform duration-500 hover:scale-105">
+    <div className="w-full p-4">
       {/* Cartão de Crédito Visível */}
-      <div className="relative bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg p-5 shadow-lg mb-6">
+      <div
+        className="w-full bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600 text-white rounded-lg p-5 shadow-lg mb-6"
+        style={{ background: 'linear-gradient(135deg, #333, #444)' }}
+      >
         <div className="flex justify-between items-center">
           <span className="text-lg font-semibold">CARTÃO DE CRÉDITO</span>
           <FaCreditCard className="text-2xl" />
@@ -64,7 +67,7 @@ const CreditCardForm = ({ onConfirm }) => {
           />
         </div>
         <div className="flex space-x-4">
-          <div>
+          <div className="flex-1">
             <label className="block text-gray-700 font-semibold mb-1">Validade</label>
             <input
               type="text"
@@ -75,7 +78,7 @@ const CreditCardForm = ({ onConfirm }) => {
               className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
-          <div>
+          <div className="flex-1">
             <label className="block text-gray-700 font-semibold mb-1">CVV</label>
             <input
               type="text"
@@ -104,7 +107,7 @@ const CreditCardForm = ({ onConfirm }) => {
         <button
           type="button"
           onClick={onConfirm}
-          className="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-indigo-600"
+          className="w-full bg-indigo-500 text-white font-bold py-2 rounded-lg transition-colors duration-300 hover:bg-indigo-600"
         >
           Confirmar Pagamento
         </button>
