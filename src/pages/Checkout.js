@@ -11,7 +11,7 @@ const Checkout = () => {
   const [pixCopyCode, setPixCopyCode] = useState(null);
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -58,6 +58,9 @@ const Checkout = () => {
         if (data.response && data.response.point_of_interaction) {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
+          setIsModalOpen(true); // Abre o modal
+          // Chame checkPaymentStatus com o ID do pagamento
+          checkPaymentStatus(data.response.id);
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
         }
@@ -81,6 +84,24 @@ const Checkout = () => {
       }).catch(() => {
         setCopySuccess('Erro ao copiar o código. Tente novamente.');
       });
+    }
+  };
+
+  // Função para verificar o status do pagamento
+  const checkPaymentStatus = async (paymentId) => {
+    try {
+      const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/webhook/status/${paymentId}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setPaymentStatus(`Status do pagamento: ${data.status}`);
+      } else {
+        setPaymentStatus('Erro ao buscar status do pagamento.');
+        console.error('Erro ao buscar status do pagamento:', data.error);
+      }
+    } catch (error) {
+      setPaymentStatus('Erro ao buscar status do pagamento.');
+      console.error('Erro ao buscar status do pagamento:', error);
     }
   };
 
