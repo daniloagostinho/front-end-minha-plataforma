@@ -23,17 +23,16 @@ const SignUp = () => {
         senha,
       });
 
-      // Corrija a extração do token da resposta
       const token = response.data.token;
       if (token) {
-        localStorage.setItem('token', token); // Armazene o token no localStorage
+        localStorage.setItem('token', token);
       } else {
         throw new Error('Token não fornecido pelo servidor.');
       }
 
       setMensagem('Usuário cadastrado com sucesso!');
       setTimeout(() => {
-        navigate('/login'); // Redirecione para a página de login
+        navigate('/login');
       }, 3000);
     } catch (error) {
       setMensagem(error.response?.data?.error || 'Erro ao realizar o cadastro. Tente novamente.');
@@ -43,7 +42,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-background min-h-screen flex items-center justify-center p-4">
+    <div className="bg-background min-h-screen flex items-start sm:items-center justify-center p-4">
       {isLoading && (
         <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
           <div className="loader"></div>
