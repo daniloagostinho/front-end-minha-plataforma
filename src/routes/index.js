@@ -10,7 +10,6 @@ import Courses from '../pages/Courses';
 import CourseDetails from '../pages/CourseDetails'
 import CoursePlayer from '../pages/CoursePlayer';
 import Checkout from '../pages/Checkout';
-import Checkout from '../pages/Login';
 
 const AppRoutes = () => {
     return (
