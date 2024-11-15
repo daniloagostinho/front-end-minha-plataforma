@@ -13,6 +13,7 @@ const Checkout = () => {
   const [paymentStatus, setPaymentStatus] = useState('');
   const [paymentId, setPaymentId] = useState(null);
   const [isPaymentPending, setIsPaymentPending] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a Modal
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -44,6 +45,7 @@ const Checkout = () => {
           if (data.status === 'approved') {
             setPaymentStatus('Pagamento realizado com sucesso!');
             setIsPaymentPending(false);
+            setIsModalOpen(true); // Abrir a Modal ao receber o status aprovado
             clearInterval(interval);
           }
         } catch (error) {
@@ -190,9 +192,18 @@ const Checkout = () => {
           </div>
         )}
 
-        {paymentStatus && (
-          <div className="mt-6">
-            <p className="text-green-500 font-semibold text-lg">{paymentStatus}</p>
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+              <h2 className="text-xl font-bold mb-4">Status do Pagamento</h2>
+              <p className="text-gray-700">{paymentStatus}</p>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition duration-200"
+              >
+                Fechar
+              </button>
+            </div>
           </div>
         )}
 
