@@ -1,4 +1,3 @@
-// src/pages/SignUp.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -44,15 +43,15 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-background min-h-screen flex items-center justify-center relative">
+    <div className="bg-background min-h-screen flex items-center justify-center p-4">
       {isLoading && (
         <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
           <div className="loader"></div>
         </div>
       )}
-      <div className="bg-white rounded-md shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Crie seu cadastro</h1>
-        <p className="text-neutral text-center mb-8">
+      <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 w-full max-w-md">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Crie seu cadastro</h1>
+        <p className="text-neutral text-center mb-6 sm:mb-8">
           Acesse nossa plataforma e comece sua jornada no mundo da programação!
         </p>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -62,7 +61,7 @@ const SignUp = () => {
               type="text"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+              className="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
               placeholder="Digite seu nome"
               required
             />
@@ -73,7 +72,7 @@ const SignUp = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+              className="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
               placeholder="Digite seu email"
               required
             />
@@ -84,20 +83,21 @@ const SignUp = () => {
               type="password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
+              className="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary focus:ring focus:ring-primary-200"
               placeholder="Digite sua senha"
               required
             />
           </label>
           <button
             type="submit"
-            className="w-full bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-secondary transition duration-200"
+            className="w-full bg-primary text-white font-semibold px-4 py-3 rounded-md hover:bg-secondary transition duration-200"
           >
             Inscrever-se
           </button>
         </form>
-        <br />
-        <GoogleSignInButton />
+        <div className="mt-4">
+          <GoogleSignInButton />
+        </div>
       </div>
     </div>
   );

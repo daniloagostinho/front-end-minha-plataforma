@@ -129,7 +129,7 @@ const Checkout = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="max-w-3xl mx-auto p-4 sm:p-6 bg-white rounded-md shadow-md mt-4 sm:mt-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 text-center">Checkout</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 text-left">Checkout</h1>
 
         <div className="mb-4">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-700">Resumo do Pedido</h2>
