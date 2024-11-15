@@ -11,7 +11,7 @@ const Checkout = () => {
   const [pixCopyCode, setPixCopyCode] = useState(null);
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('pending');
-  const [paymentId, setPaymentId] = useState(null); // Adicionado para armazenar o ID do pagamento
+  const [paymentId, setPaymentId] = useState(null);
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -29,7 +29,7 @@ const Checkout = () => {
     setPixCopyCode(null);
     setCopySuccess('');
     setPaymentStatus('pending');
-    setPaymentId(null); // Resetar o ID do pagamento
+    setPaymentId(null);
   }, [course.price]);
 
   // Função para lidar com a troca de método de pagamento
@@ -59,7 +59,7 @@ const Checkout = () => {
         if (response.ok && data.response && data.response.point_of_interaction) {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
-          setPaymentId(data.response.id); // Armazena o ID do pagamento
+          setPaymentId(data.response.id);
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
           setPaymentStatus('Erro ao criar pagamento Pix. Tente novamente.');
@@ -73,7 +73,7 @@ const Checkout = () => {
       setPixCopyCode(null);
       setCopySuccess('');
       setPaymentStatus('pending');
-      setPaymentId(null); // Resetar o ID do pagamento
+      setPaymentId(null);
     }
   };
 
@@ -82,11 +82,11 @@ const Checkout = () => {
     if (!paymentId) return;
 
     try {
-      const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/webhook/api/pagamento/status/${paymentId}`); // TODO
+      const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/webhook/api/pagamento/status/${paymentId}`);
       const data = await response.json();
 
       if (response.ok) {
-        setPaymentStatus(data.status); // Atualiza o status do pagamento
+        setPaymentStatus(data.status);
       } else {
         console.error('Erro ao buscar status do pagamento:', data.error);
         setPaymentStatus('Erro ao verificar status do pagamento.');
@@ -97,16 +97,21 @@ const Checkout = () => {
     }
   };
 
-  // UseEffect para verificar o status do pagamento quando o paymentId for definido
+  // UseEffect para verificar o status do pagamento
   useEffect(() => {
     if (paymentId) {
       const interval = setInterval(() => {
-        checkPaymentStatus(); // Verifica o status a cada 5 segundos
+        checkPaymentStatus();
       }, 5000);
 
-      return () => clearInterval(interval); // Limpa o intervalo quando o componente desmonta
+      // Limpar o intervalo se o pagamento for aprovado ou não for pendente
+      if (paymentStatus !== 'pending') {
+        clearInterval(interval);
+      }
+
+      return () => clearInterval(interval);
     }
-  }, [paymentId]);
+  }, [paymentId, paymentStatus]);
 
   // Função para copiar o código Pix
   const handleCopyPixCode = () => {
@@ -202,7 +207,7 @@ const Checkout = () => {
         {paymentStatus !== 'pending' && (
           <div className="mt-6">
             <p className={`text-lg font-semibold ${paymentStatus === 'approved' ? 'text-green-500' : 'text-red-500'}`}>
-              {paymentStatus === 'approved' ? 'Pagamento aprovado com sucesso!' : 'Pagamento não aprovado.'}
+              {paymentStatus === 'approved' ? 'Pagamento aprovado com sucesso!' : 'Pagamento não aprovado!'}
             </p>
           </div>
         )}
