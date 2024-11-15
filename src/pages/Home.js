@@ -21,15 +21,20 @@ const Home = () => {
 
   return (
     <div className="bg-background min-h-screen">
-
       <Navbar />
-
       {/* Hero Section */}
-      <header className="bg-gradient-to-r from-purple-600 to-primary text-white py-16">
+      <header
+        className="relative text-white py-16 bg-black"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 1000 1000' fill='none' stroke='%23ffffff' stroke-width='0.5'%3E%3Cpath d='M0,500 Q250,0 500,500 T1000,500'/%3E%3Cpath d='M0,700 Q250,200 500,700 T1000,700'/%3E%3Cpath d='M0,900 Q250,400 500,900 T1000,900'/%3E%3C/svg%3E")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
           {/* Texto do Título Alinhado à Esquerda */}
           <div className="md:w-1/2 text-left space-y-4">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight break-words">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight break-words bg-clip-text">
               Aprenda Programação e <br className="hidden md:block" /> Transforme Sua Carreira
             </h1>
             <p className="mt-2 text-lg">
@@ -128,11 +133,21 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-16 text-center bg-white">
-        <h2 className="text-3xl font-bold mb-4">Pronto para Começar?</h2>
-        <p className="text-neutral mb-8">
+      <section
+        className="py-16 text-center bg-black"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 1000 1000' fill='none' stroke='%23ffffff' stroke-width='0.5'%3E%3Cpath d='M0,500 Q250,0 500,500 T1000,500'/%3E%3Cpath d='M0,700 Q250,200 500,700 T1000,700'/%3E%3Cpath d='M0,900 Q250,400 500,900 T1000,900'/%3E%3C/svg%3E")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'bottom',
+        }}
+      >
+        <h2 className="text-5xl md:text-6xl font-bold leading-tight break-words bg-clip-text text-white">
+          Pronto para Começar?
+        </h2>
+        <p className="text-white mb-8 mt-2 text-lg">
           Inscreva-se hoje mesmo e comece sua jornada no mundo da programação.
         </p>
+
         {/* Botão de Inscreva-se Grátis com espaçamento ajustado */}
         <button
           className="mt-12 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-10 rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
@@ -141,6 +156,7 @@ const Home = () => {
           Inscreva-se Grátis
         </button>
       </section>
+
     </div>
   );
 };
