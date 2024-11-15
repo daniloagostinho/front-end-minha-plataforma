@@ -43,9 +43,10 @@ const Dashboard = () => {
           userCourses.length === 0 ? (
             <div className="flex flex-col justify-center items-center text-center" style={{ minHeight: '60vh' }}>
               {user && (
-                <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
+                <h1 className="text-5xl font-extrabold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-600">
                   Bem-vindo, {user.nome}!
                 </h1>
+
               )}
 
               <p className="text-gray-600 text-lg mb-6">
