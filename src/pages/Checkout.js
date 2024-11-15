@@ -82,7 +82,7 @@ const Checkout = () => {
     if (!paymentId) return;
 
     try {
-      const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/api/pagamento/status/${paymentId}`); // TODO
+      const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/webhook/api/pagamento/status/${paymentId}`); // TODO
       const data = await response.json();
 
       if (response.ok) {
