@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { FaCreditCard } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext'; // Importando o contexto de autenticação
 
-const CreditCardForm = ({ onConfirm }) => {
+const CreditCardForm = ({ course, onConfirm }) => {
   const { user } = useContext(AuthContext); // Obtendo o e-mail do usuário do contexto
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
@@ -20,7 +20,7 @@ const CreditCardForm = ({ onConfirm }) => {
   };
 
   const handleConfirmPayment = async () => {
-    // Adicionando o e-mail ao objeto de dados de pagamento
+    // Adicionando o e-mail e o valor do curso ao objeto de dados de pagamento
     const paymentData = {
       cardNumber,
       cardName,
@@ -28,6 +28,7 @@ const CreditCardForm = ({ onConfirm }) => {
       cvv,
       installments,
       email: user?.email || 'email@exemplo.com', // Incluindo o e-mail do usuário
+      transaction_amount: parseFloat(course.price), // Incluindo o valor do curso
     };
 
     try {
