@@ -65,7 +65,7 @@ const Checkout = () => {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
           setPaymentId(data.response.id);
-          
+
           // Inicia o polling apenas após a resposta bem-sucedida
           setShouldCheckStatus(true);
         } else {
@@ -78,6 +78,9 @@ const Checkout = () => {
       } finally {
         setIsLoading(false); // Desativar o carregamento
       }
+    } else if (method === 'creditCard') {
+      // Mostra o componente de cartão de crédito
+      setShowCreditCardForm(true);
     } else {
       setQrCodeBase64(null);
       setPixCopyCode(null);
@@ -85,6 +88,7 @@ const Checkout = () => {
       setPaymentStatus('pending');
       setPaymentId(null);
       setShouldCheckStatus(false);
+      setShowCreditCardForm(false);
     }
   };
 
@@ -221,6 +225,9 @@ const Checkout = () => {
                   </div>
                 )}
               </div>
+            )}
+            {selectedPaymentMethod === 'creditCard' && (
+              <CreditCardForm onConfirm={() => console.log('Pagamento Confirmado')} />
             )}
           </>
         )}
