@@ -10,8 +10,8 @@ const Checkout = () => {
   const [qrCodeBase64, setQrCodeBase64] = useState(null);
   const [pixCopyCode, setPixCopyCode] = useState(null);
   const [copySuccess, setCopySuccess] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState('pending'); // Inicializa como "pending"
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a Modal
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -28,7 +28,8 @@ const Checkout = () => {
     setQrCodeBase64(null);
     setPixCopyCode(null);
     setCopySuccess('');
-    setPaymentStatus('');
+    setPaymentStatus('pending');
+    setIsModalOpen(false); // Certifique-se de fechar o modal quando o curso mudar
   }, [course.price]);
 
   // Função para lidar com a troca de método de pagamento
@@ -55,23 +56,29 @@ const Checkout = () => {
         });
 
         const data = await response.json();
-        if (data.response && data.response.point_of_interaction) {
+        if (response.ok && data.response && data.response.point_of_interaction) {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
-          setIsModalOpen(true); // Abre o modal
-          // Chame checkPaymentStatus com o ID do pagamento
-          checkPaymentStatus(data.response.id);
+
+          // Aqui você pode definir o status inicial como "pending"
+          setPaymentStatus('pending');
+
+          // Verifique o status do pagamento em um intervalo (exemplo: via polling)
+          checkPaymentStatus(data.response.id); // Substitua pelo seu ID de pagamento
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
+          setPaymentStatus('Erro ao criar pagamento Pix. Tente novamente.');
         }
       } catch (error) {
         console.error('Erro ao gerar pagamento Pix:', error);
+        setPaymentStatus('Erro ao gerar pagamento Pix.');
       }
     } else {
       setQrCodeBase64(null);
       setPixCopyCode(null);
       setCopySuccess('');
-      setPaymentStatus('');
+      setPaymentStatus('pending');
+      setIsModalOpen(false); // Fecha o modal para outros métodos de pagamento
     }
   };
 
@@ -94,13 +101,14 @@ const Checkout = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setPaymentStatus(`Status do pagamento: ${data.status}`);
+        setPaymentStatus(data.status);
+        if (data.status !== 'pending') {
+          setIsModalOpen(true); // Abre o modal apenas se o status for diferente de "pending"
+        }
       } else {
-        setPaymentStatus('Erro ao buscar status do pagamento.');
         console.error('Erro ao buscar status do pagamento:', data.error);
       }
     } catch (error) {
-      setPaymentStatus('Erro ao buscar status do pagamento.');
       console.error('Erro ao buscar status do pagamento:', error);
     }
   };
