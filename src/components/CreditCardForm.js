@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { FaCreditCard } from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext'; // Importando o contexto de autenticação
 
 const CreditCardForm = ({ onConfirm }) => {
+  const { user } = useContext(AuthContext); // Obtendo o e-mail do usuário do contexto
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -18,13 +20,14 @@ const CreditCardForm = ({ onConfirm }) => {
   };
 
   const handleConfirmPayment = async () => {
-    // Aqui você pode formatar e enviar os dados para o backend
+    // Adicionando o e-mail ao objeto de dados de pagamento
     const paymentData = {
       cardNumber,
       cardName,
       expiryDate,
       cvv,
       installments,
+      email: user?.email || 'email@exemplo.com', // Incluindo o e-mail do usuário
     };
 
     try {
