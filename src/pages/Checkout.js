@@ -16,6 +16,7 @@ const Checkout = () => {
   const [paymentId, setPaymentId] = useState(null);
   const [shouldCheckStatus, setShouldCheckStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Controla o carregamento
+  const [paymentInitiated, setPaymentInitiated] = useState(false); // Controla se o pagamento foi iniciado
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -35,6 +36,7 @@ const Checkout = () => {
     setPaymentStatus('pending');
     setPaymentId(null);
     setShouldCheckStatus(false);
+    setPaymentInitiated(false); // Resetar o controle de pagamento
   }, [course.price]);
 
   // Função para lidar com a troca de método de pagamento
@@ -65,7 +67,7 @@ const Checkout = () => {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
           setPaymentId(data.response.id);
-          setShouldCheckStatus(true);
+          setPaymentInitiated(true); // Marcar que o pagamento foi iniciado
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
           setPaymentStatus('Erro ao criar pagamento Pix. Tente novamente.');
@@ -83,7 +85,13 @@ const Checkout = () => {
       setPaymentStatus('pending');
       setPaymentId(null);
       setShouldCheckStatus(false);
+      setPaymentInitiated(false); // Resetar o controle de pagamento
     }
+  };
+
+  // Função para iniciar a verificação de status do pagamento
+  const handlePaymentSuccess = () => {
+    setShouldCheckStatus(true); // Iniciar o polling quando o pagamento for feito
   };
 
   // Função para verificar o status do pagamento
@@ -222,6 +230,14 @@ const Checkout = () => {
                   </div>
                 )}
               </div>
+            )}
+            {paymentInitiated && (
+              <button
+                onClick={handlePaymentSuccess}
+                className="mt-4 bg-primary text-white font-bold py-2 px-4 rounded-md"
+              >
+                Confirmar Pagamento Realizado
+              </button>
             )}
           </>
         )}
