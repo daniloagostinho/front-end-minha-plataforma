@@ -28,7 +28,7 @@ const CreditCardForm = ({ onConfirm }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/pagamento/cartao', {
+      const response = await fetch('https://back-end-minha-plataforma-app.vercel.app/api/pagamento/cartao', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
