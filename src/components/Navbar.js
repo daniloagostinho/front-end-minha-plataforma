@@ -38,6 +38,12 @@ const Navbar = () => {
             Painel
           </button>
           <button
+            onClick={() => navigate('/login')}
+            className="text-gray-800 font-bold hover:text-primary"
+          >
+            Login
+          </button>
+          <button
             onClick={() => navigate('/signup')}
             className="text-gray-800 font-bold hover:text-primary"
           >
@@ -84,10 +90,16 @@ const Navbar = () => {
               Painel
             </button>
             <button
+              onClick={() => navigate('/login')}
+              className="text-gray-800 font-bold hover:text-primary"
+            >
+              Login
+            </button>
+            <button
               onClick={() => navigate('/signup')}
               className="text-gray-800 font-bold hover:text-primary"
             >
-              Cadastro
+              Cadastrar grátis
             </button>
           </div>
         </div>

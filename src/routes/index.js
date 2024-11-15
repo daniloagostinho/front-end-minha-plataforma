@@ -10,6 +10,7 @@ import Courses from '../pages/Courses';
 import CourseDetails from '../pages/CourseDetails'
 import CoursePlayer from '../pages/CoursePlayer';
 import Checkout from '../pages/Checkout';
+import Checkout from '../pages/Login';
 
 const AppRoutes = () => {
     return (
@@ -25,8 +26,9 @@ const AppRoutes = () => {
                 <Route path="/course/:id" element={<CourseDetails />} />
                 <Route path="/coursePlayer" element={<CoursePlayer />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/login" element={<Login />} />
                 {/* <Route path="/sobre" element={<Checkout />} /> */}
-{/* 
+                {/* 
                 <Route path="/sucesso" component={Sucesso} />
                 <Route path="/fracasso" component={Fracasso} />
                 <Route path="/pendente" component={Pendente} /> */}
