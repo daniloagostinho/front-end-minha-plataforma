@@ -31,32 +31,33 @@ const Home = () => {
           backgroundPosition: 'center',
         }}
       >
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
-          {/* Texto do Título Alinhado à Esquerda */}
-          <div className="md:w-1/2 text-left space-y-4">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight break-words bg-clip-text">
-              Aprenda Programação e <br className="hidden md:block" /> Transforme Sua Carreira
-            </h1>
-            <p className="mt-2 text-lg">
-              Cursos de tecnologia acessíveis para pessoas de baixa renda. Venha aprender e melhorar sua qualidade de vida com nossos cursos.
-            </p>
-            {/* Botão de Inscreva-se Grátis */}
-            <button
-              className="mt-6 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-10 rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
-              onClick={() => navigate('/signup')}
-            >
-              Inscreva-se Grátis
-            </button>
-          </div>
-          {/* Imagem do Lado Direito */}
-          <div className="md:w-1/2 mt-8 md:mt-0 flex justify-center">
-            <img
-              src={heroImage}
-              alt="Imagem de Programação"
-              className="w-full h-auto rounded-md shadow-lg"
-            />
-          </div>
-        </div>
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
+  {/* Texto do Título Alinhado à Esquerda */}
+  <div className="md:w-1/2 text-left space-y-4">
+    <h1 className="text-5xl md:text-6xl font-bold leading-tight break-words bg-clip-text">
+      Aprenda Programação e <br className="hidden md:block" /> Transforme Sua Carreira
+    </h1>
+    <p className="mt-2 text-lg">
+      Cursos de tecnologia acessíveis para pessoas de baixa renda. Venha aprender e melhorar sua qualidade de vida com nossos cursos.
+    </p>
+    {/* Botão de Inscreva-se Grátis */}
+    <button
+      className="mt-6 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-10 rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
+      onClick={() => navigate('/signup')}
+    >
+      Inscreva-se Grátis
+    </button>
+  </div>
+  {/* Imagem do Lado Direito */}
+  <div className="hidden md:flex md:w-1/2 mt-8 md:mt-0 justify-center">
+    <img
+      src={heroImage}
+      alt="Imagem de Programação"
+      className="w-full h-auto rounded-md shadow-lg"
+    />
+  </div>
+</div>
+
       </header>
 
       {/* About Section */}
