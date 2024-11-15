@@ -16,7 +16,6 @@ const Checkout = () => {
   const [paymentId, setPaymentId] = useState(null);
   const [shouldCheckStatus, setShouldCheckStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Controla o carregamento
-  const [paymentInitiated, setPaymentInitiated] = useState(false); // Controla se o pagamento foi iniciado
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -36,7 +35,6 @@ const Checkout = () => {
     setPaymentStatus('pending');
     setPaymentId(null);
     setShouldCheckStatus(false);
-    setPaymentInitiated(false); // Resetar o controle de pagamento
   }, [course.price]);
 
   // Função para lidar com a troca de método de pagamento
@@ -67,7 +65,9 @@ const Checkout = () => {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
           setPaymentId(data.response.id);
-          setPaymentInitiated(true); // Marcar que o pagamento foi iniciado
+          
+          // Inicia o polling apenas após a resposta bem-sucedida
+          setShouldCheckStatus(true);
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
           setPaymentStatus('Erro ao criar pagamento Pix. Tente novamente.');
@@ -85,19 +85,12 @@ const Checkout = () => {
       setPaymentStatus('pending');
       setPaymentId(null);
       setShouldCheckStatus(false);
-      setPaymentInitiated(false); // Resetar o controle de pagamento
     }
-  };
-
-  // Função para iniciar a verificação de status do pagamento
-  const handlePaymentSuccess = () => {
-    setShouldCheckStatus(true); // Iniciar o polling quando o pagamento for feito
   };
 
   // Função para verificar o status do pagamento
   const checkPaymentStatus = async () => {
     if (!paymentId) return;
-    setIsLoading(true); // Ativar o carregamento ao verificar o status
     try {
       const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/webhook/api/pagamento/status/${paymentId}`);
       const data = await response.json();
@@ -105,7 +98,7 @@ const Checkout = () => {
       if (response.ok) {
         setPaymentStatus(data.status);
         if (data.status === 'approved') {
-          setShouldCheckStatus(false);
+          setShouldCheckStatus(false); // Parar o polling se o pagamento for aprovado
         }
       } else {
         console.error('Erro ao buscar status do pagamento:', data.error);
@@ -114,8 +107,6 @@ const Checkout = () => {
     } catch (error) {
       console.error('Erro ao buscar status do pagamento:', error);
       setPaymentStatus('Erro ao verificar status do pagamento.');
-    } finally {
-      setIsLoading(false); // Desativar o carregamento após a verificação
     }
   };
 
@@ -230,14 +221,6 @@ const Checkout = () => {
                   </div>
                 )}
               </div>
-            )}
-            {paymentInitiated && (
-              <button
-                onClick={handlePaymentSuccess}
-                className="mt-4 bg-primary text-white font-bold py-2 px-4 rounded-md"
-              >
-                Confirmar Pagamento Realizado
-              </button>
             )}
           </>
         )}
