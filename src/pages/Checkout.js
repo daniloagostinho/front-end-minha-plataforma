@@ -89,6 +89,7 @@ const Checkout = () => {
   // Função para verificar o status do pagamento
   const checkPaymentStatus = async () => {
     if (!paymentId) return;
+    setIsLoading(true); // Ativar o carregamento ao verificar o status
     try {
       const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/webhook/api/pagamento/status/${paymentId}`);
       const data = await response.json();
@@ -105,6 +106,8 @@ const Checkout = () => {
     } catch (error) {
       console.error('Erro ao buscar status do pagamento:', error);
       setPaymentStatus('Erro ao verificar status do pagamento.');
+    } finally {
+      setIsLoading(false); // Desativar o carregamento após a verificação
     }
   };
 
