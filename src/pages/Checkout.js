@@ -11,7 +11,6 @@ const Checkout = () => {
   const [pixCopyCode, setPixCopyCode] = useState(null);
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('pending'); // Inicializa como "pending"
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a Modal
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -29,7 +28,6 @@ const Checkout = () => {
     setPixCopyCode(null);
     setCopySuccess('');
     setPaymentStatus('pending');
-    setIsModalOpen(false); // Certifique-se de fechar o modal quando o curso mudar
   }, [course.price]);
 
   // Função para lidar com a troca de método de pagamento
@@ -60,11 +58,8 @@ const Checkout = () => {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
 
-          // Aqui você pode definir o status inicial como "pending"
+          // Após gerar o pagamento, aguarde o webhook atualizar o status
           setPaymentStatus('pending');
-
-          // Verifique o status do pagamento em um intervalo (exemplo: via polling)
-          checkPaymentStatus(data.response.id); // Substitua pelo seu ID de pagamento
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
           setPaymentStatus('Erro ao criar pagamento Pix. Tente novamente.');
@@ -78,7 +73,6 @@ const Checkout = () => {
       setPixCopyCode(null);
       setCopySuccess('');
       setPaymentStatus('pending');
-      setIsModalOpen(false); // Fecha o modal para outros métodos de pagamento
     }
   };
 
@@ -94,24 +88,18 @@ const Checkout = () => {
     }
   };
 
-  // Função para verificar o status do pagamento
-  const checkPaymentStatus = async (paymentId) => {
-    try {
-      const response = await fetch(`https://back-end-minha-plataforma-app.vercel.app/webhook/status/${paymentId}`);
-      const data = await response.json();
+  // Simulação de atualização do status usando o webhook
+  useEffect(() => {
+    // Aqui, você deve ter alguma lógica para atualizar o status do pagamento
+    // usando informações do webhook. Simule isso com um efeito ou escute as atualizações.
+    // Atualize o status quando o webhook indicar que o pagamento foi aprovado.
 
-      if (response.ok) {
-        setPaymentStatus(data.status);
-        if (data.status !== 'pending') {
-          setIsModalOpen(true); // Abre o modal apenas se o status for diferente de "pending"
-        }
-      } else {
-        console.error('Erro ao buscar status do pagamento:', data.error);
-      }
-    } catch (error) {
-      console.error('Erro ao buscar status do pagamento:', error);
+    // Exemplo de como o status pode ser atualizado:
+    if (paymentStatus !== 'pending') {
+      // Mostre o feedback de sucesso ou erro com base no status
+      console.log('Status do pagamento atualizado:', paymentStatus);
     }
-  };
+  }, [paymentStatus]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -191,27 +179,14 @@ const Checkout = () => {
           </div>
         )}
 
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-              <h2 className="text-xl font-bold mb-4">Status do Pagamento</h2>
-              <p className="text-gray-700">{paymentStatus}</p>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition duration-200"
-              >
-                Fechar
-              </button>
-            </div>
+        {/* Exibir o status do pagamento na tela */}
+        {paymentStatus !== 'pending' && (
+          <div className="mt-6">
+            <p className={`text-lg font-semibold ${paymentStatus === 'approved' ? 'text-green-500' : 'text-red-500'}`}>
+              {paymentStatus === 'approved' ? 'Pagamento aprovado com sucesso!' : 'Pagamento não aprovado.'}
+            </p>
           </div>
         )}
-
-        <button
-          onClick={() => alert('Pagamento realizado com sucesso!')}
-          className="w-full bg-primary text-white font-bold py-4 rounded-md hover:bg-secondary transition duration-200"
-        >
-          Confirmar Pagamento
-        </button>
       </div>
     </div>
   );
