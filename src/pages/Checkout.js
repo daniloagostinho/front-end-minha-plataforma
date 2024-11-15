@@ -3,6 +3,7 @@ import { FaCreditCard, FaPaypal } from 'react-icons/fa';
 import { SiPix } from 'react-icons/si';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import SpinnerLoading from '../components/SpinnerLoading'; // Importando o Spinner
 import { AuthContext } from '../context/AuthContext';
 
 const Checkout = () => {
@@ -12,29 +13,26 @@ const Checkout = () => {
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [paymentId, setPaymentId] = useState(null);
-  const [shouldCheckStatus, setShouldCheckStatus] = useState(false); // Nova variável para controlar o polling
+  const [shouldCheckStatus, setShouldCheckStatus] = useState(false); // Variável para controlar o polling
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
   const course = location.state?.course;
 
-  // Formatar o preço
   const formattedPrice = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).format(course.price);
 
-  // Resetar QR code, código Pix e estado de pagamento ao mudar o valor do curso
   useEffect(() => {
     setQrCodeBase64(null);
     setPixCopyCode(null);
     setCopySuccess('');
     setPaymentStatus('pending');
     setPaymentId(null);
-    setShouldCheckStatus(false); // Resetar o polling ao mudar o curso
+    setShouldCheckStatus(false);
   }, [course.price]);
 
-  // Função para lidar com a troca de método de pagamento
   const handlePaymentMethodChange = async (method) => {
     setSelectedPaymentMethod(method);
 
@@ -62,7 +60,7 @@ const Checkout = () => {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
           setPaymentId(data.response.id);
-          setShouldCheckStatus(true); // Ativar o polling após a criação bem-sucedida do pagamento
+          setShouldCheckStatus(true);
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
           setPaymentStatus('Erro ao criar pagamento Pix. Tente novamente.');
@@ -77,11 +75,10 @@ const Checkout = () => {
       setCopySuccess('');
       setPaymentStatus('pending');
       setPaymentId(null);
-      setShouldCheckStatus(false); // Desativar o polling se não for Pix
+      setShouldCheckStatus(false);
     }
   };
 
-  // Função para verificar o status do pagamento
   const checkPaymentStatus = async () => {
     if (!paymentId) return;
 
@@ -92,7 +89,7 @@ const Checkout = () => {
       if (response.ok) {
         setPaymentStatus(data.status);
         if (data.status === 'approved') {
-          setShouldCheckStatus(false); // Parar o polling se o pagamento for aprovado
+          setShouldCheckStatus(false);
         }
       } else {
         console.error('Erro ao buscar status do pagamento:', data.error);
@@ -104,7 +101,6 @@ const Checkout = () => {
     }
   };
 
-  // UseEffect para verificar o status do pagamento
   useEffect(() => {
     if (shouldCheckStatus) {
       const interval = setInterval(() => {
@@ -115,7 +111,6 @@ const Checkout = () => {
     }
   }, [shouldCheckStatus]);
 
-  // Função para copiar o código Pix
   const handleCopyPixCode = () => {
     if (pixCopyCode) {
       navigator.clipboard.writeText(pixCopyCode).then(() => {
@@ -202,6 +197,12 @@ const Checkout = () => {
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {shouldCheckStatus && (
+          <div className="mt-6">
+            <SpinnerLoading /> {/* Exibindo o spinner enquanto espera o status */}
           </div>
         )}
 
