@@ -12,6 +12,7 @@ const Checkout = () => {
   const [copySuccess, setCopySuccess] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [paymentId, setPaymentId] = useState(null);
+  const [shouldCheckStatus, setShouldCheckStatus] = useState(false); // Nova variável para controlar o polling
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -30,6 +31,7 @@ const Checkout = () => {
     setCopySuccess('');
     setPaymentStatus('pending');
     setPaymentId(null);
+    setShouldCheckStatus(false); // Resetar o polling ao mudar o curso
   }, [course.price]);
 
   // Função para lidar com a troca de método de pagamento
@@ -60,6 +62,7 @@ const Checkout = () => {
           setQrCodeBase64(data.response.point_of_interaction.transaction_data.qr_code_base64);
           setPixCopyCode(data.response.point_of_interaction.transaction_data.qr_code);
           setPaymentId(data.response.id);
+          setShouldCheckStatus(true); // Ativar o polling após a criação bem-sucedida do pagamento
         } else {
           console.error('Dados de pagamento Pix não encontrados na resposta:', data);
           setPaymentStatus('Erro ao criar pagamento Pix. Tente novamente.');
@@ -74,6 +77,7 @@ const Checkout = () => {
       setCopySuccess('');
       setPaymentStatus('pending');
       setPaymentId(null);
+      setShouldCheckStatus(false); // Desativar o polling se não for Pix
     }
   };
 
@@ -87,6 +91,9 @@ const Checkout = () => {
 
       if (response.ok) {
         setPaymentStatus(data.status);
+        if (data.status === 'approved') {
+          setShouldCheckStatus(false); // Parar o polling se o pagamento for aprovado
+        }
       } else {
         console.error('Erro ao buscar status do pagamento:', data.error);
         setPaymentStatus('Erro ao verificar status do pagamento.');
@@ -99,19 +106,14 @@ const Checkout = () => {
 
   // UseEffect para verificar o status do pagamento
   useEffect(() => {
-    if (paymentId) {
+    if (shouldCheckStatus) {
       const interval = setInterval(() => {
         checkPaymentStatus();
       }, 5000);
 
-      // Limpar o intervalo se o pagamento for aprovado ou não for pendente
-      if (paymentStatus !== 'pending') {
-        clearInterval(interval);
-      }
-
       return () => clearInterval(interval);
     }
-  }, [paymentId, paymentStatus]);
+  }, [shouldCheckStatus]);
 
   // Função para copiar o código Pix
   const handleCopyPixCode = () => {
