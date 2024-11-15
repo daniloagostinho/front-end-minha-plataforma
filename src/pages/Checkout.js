@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FaCreditCard, FaPaypal } from 'react-icons/fa';
 import { SiPix } from 'react-icons/si';
-import { AiOutlineCheckCircle } from 'react-icons/ai'; // Ícone de sucesso importado
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SpinnerLoading from '../components/SpinnerLoading'; // Importando o Spinner
@@ -15,7 +15,7 @@ const Checkout = () => {
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [paymentId, setPaymentId] = useState(null);
   const [shouldCheckStatus, setShouldCheckStatus] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Controla o carregamento
+  const [isLoading, setIsLoading] = useState(false); // Controla o carregamento
   const location = useLocation();
   const { user } = useContext(AuthContext);
 
@@ -35,7 +35,6 @@ const Checkout = () => {
     setPaymentStatus('pending');
     setPaymentId(null);
     setShouldCheckStatus(false);
-    setIsLoading(false); // Desativar o carregamento inicial
   }, [course.price]);
 
   // Função para lidar com a troca de método de pagamento
@@ -98,7 +97,6 @@ const Checkout = () => {
         setPaymentStatus(data.status);
         if (data.status === 'approved') {
           setShouldCheckStatus(false);
-          setIsLoading(false); // Desativar o carregamento ao aprovar
         }
       } else {
         console.error('Erro ao buscar status do pagamento:', data.error);
@@ -136,12 +134,13 @@ const Checkout = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="relative max-w-3xl mx-auto p-4 sm:p-6 bg-white rounded-md shadow-md mt-4 sm:mt-8">
-        {isLoading ? (
+        {isLoading && (
           // Fundo branco desfocado e spinner centralizado
-          <div className="absolute inset-0 bg-white bg-opacity-80 backdrop-blur-sm flex items-center justify-center rounded-md">
-            <SpinnerLoading />
+          <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-md flex items-center justify-center rounded-md">
+            <SpinnerLoading className="text-primary" />
           </div>
-        ) : paymentStatus === 'approved' ? (
+        )}
+        {paymentStatus === 'approved' ? (
           // Bloco de sucesso centralizado e estilizado
           <div className="flex flex-col items-center justify-center space-y-4 mt-20">
             <AiOutlineCheckCircle className="text-green-500 text-6xl" />
