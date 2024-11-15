@@ -3,7 +3,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import CoursePlayer from './CoursePlayer';
-import Header from './Header';
+import Navbar from '../components/Navbar';
+
 
 const courses = [
   // Seus cursos...
@@ -30,14 +31,9 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header />
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
       <main className="p-8 sm:p-12 items-center">
-        {user && (
-          <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
-            Bem-vindo, {user.nome}!
-          </h1>
-        )}
         {userCourses.length > 0 && (
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Meus Cursos</h2>
         )}
@@ -46,6 +42,12 @@ const Dashboard = () => {
         ) : (
           userCourses.length === 0 ? (
             <div className="flex flex-col justify-center items-center text-center" style={{ minHeight: '60vh' }}>
+              {user && (
+                <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
+                  Bem-vindo, {user.nome}!
+                </h1>
+              )}
+
               <p className="text-gray-600 text-lg mb-6">
                 Você ainda não está inscrito em nenhum curso. Explore nossos cursos disponíveis para começar sua jornada de aprendizado!
               </p>
