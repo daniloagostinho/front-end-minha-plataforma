@@ -36,7 +36,7 @@ const CreditCardForm = ({ user, course }) => {
                 expiryDate,
                 cvv,
                 installments,
-                amount: course.price, // O valor do curso
+                transaction_amount: parseFloat(course.price), // O valor do curso
                 description: course.title, // Descrição do curso
                 email: user?.email || 'email@padrao.com' // E-mail do usuário
             };
