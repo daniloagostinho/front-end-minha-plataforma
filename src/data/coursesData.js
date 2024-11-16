@@ -26,7 +26,7 @@ export const initialCourses = {
           }
         ],
         image: reactImage,
-        price: 5
+        price: 10.00
       },
       {
         id: 2,
@@ -45,7 +45,7 @@ export const initialCourses = {
           }
         ],
         image: angularImage,
-        price: 5
+        price: 10.00
       },
       {
         id: 2,
@@ -64,7 +64,7 @@ export const initialCourses = {
           }
         ],
         image: vueImage,
-        price: 5
+        price: 10.00
       }
     ],
     "Back-end": [
@@ -85,7 +85,7 @@ export const initialCourses = {
           }
         ],
         image: nodeImage,
-        price: 5
+        price: 10.00
       },
       // Adicione os outros cursos da mesma forma...
     ]
@@ -110,7 +110,7 @@ export const initialCourses = {
           }
         ],
         image: devopsImage,
-        price: 5
+        price: 10.00
       },
       // Adicione os outros cursos da mesma forma...
     ]
