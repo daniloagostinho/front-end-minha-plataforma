@@ -10,7 +10,7 @@ import PixPayment from '../components/PixPayment';
 import { AuthContext } from '../context/AuthContext';
 
 const Checkout = () => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('creditCard');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const location = useLocation();
   const { user } = useContext(AuthContext);
