@@ -52,7 +52,6 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
         }
     };
 
-
     const handleConfirmPayment = () => {
         if (!cardNumber || !cardName || !expiryDate || !cvv) {
             alert('Preencha todos os campos corretamente.');
