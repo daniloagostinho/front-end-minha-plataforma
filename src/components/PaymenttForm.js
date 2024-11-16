@@ -7,8 +7,6 @@ const PaymentForm = ({ user, course, onPaymentSuccess }) => {
         initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
         
         const renderPaymentBrick = async () => {
-            const mp = new window.MercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
-            const bricksBuilder = mp.bricks();
 
             const settings = {
                 initialization: {
