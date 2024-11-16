@@ -57,10 +57,10 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
             return;
         }
 
-        if (!course || !user) {
-            alert('Informações do curso ou do usuário não disponíveis.');
-            return;
-        }
+        // if (!course || !user) {
+        //     alert('Informações do curso ou do usuário não disponíveis.');
+        //     return;
+        // }
 
         // Dados do pagamento
         const paymentData = {
