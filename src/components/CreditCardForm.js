@@ -127,13 +127,6 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
             });
     };
 
-    // Função simulada para gerar um token (substitua isso com a lógica real da biblioteca do Mercado Pago)
-    function generateCardToken({ cardNumber, cardName, expiryDate, cvv }) {
-        // Aqui você deve integrar com a API ou biblioteca correta para gerar o token do cartão
-        return 'simulated-card-token';
-    }
-
-
     return (
         <div className="w-full p-4">
             {/* Cartão de Crédito Visível */}
