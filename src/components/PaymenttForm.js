@@ -73,7 +73,6 @@ const PaymentForm = ({ user, course, onPaymentSuccess }) => {
                     },
                 },
             };
-            await bricksBuilder.create('payment', 'paymentBrick_container', settings);
         };
 
         renderPaymentBrick();
