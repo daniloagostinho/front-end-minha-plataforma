@@ -4,7 +4,8 @@ import { initMercadoPago } from '@mercadopago/sdk-react';
 const PaymentForm = ({ user, course, onPaymentSuccess }) => {
     useEffect(() => {
         // Inicializa o Mercado Pago com sua chave pública
-        initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
+        // initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
+        initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea');
         
         const renderPaymentBrick = async () => {
 
