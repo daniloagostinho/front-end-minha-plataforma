@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FaCreditCard } from 'react-icons/fa';
 import { initMercadoPago, CardPayment } from '@mercadopago/sdk-react';
 
 const CreditCardForm = ({ user, course, onConfirm }) => {
-    const [installmentsOptions, setInstallmentsOptions] = useState([]);
-    const [selectedInstallments, setSelectedInstallments] = useState(1);
-
     useEffect(() => {
         // Inicializa o Mercado Pago com sua chave pública
         initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
@@ -46,26 +43,6 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
         }
     };
 
-    const fetchInstallments = async (paymentMethodId) => {
-        try {
-            const response = await fetch(
-                `https://api.mercadopago.com/v1/payment_methods/installments?payment_method_id=${paymentMethodId}&amount=${course.price}&locale=pt-BR`,
-                {
-                    headers: {
-                        Authorization: `Bearer APP_USR-6757817723632797-111321-7e971b9cf61cbf26622fc63aaf2aac3d-380986595`, // Substitua pelo seu token de acesso
-                    },
-                }
-            );
-
-            const data = await response.json();
-            if (data && data.length > 0) {
-                setInstallmentsOptions(data[0].payer_costs);
-            }
-        } catch (error) {
-            console.error('Erro ao buscar opções de parcelas:', error);
-        }
-    };
-
     return (
         <div className="w-full p-4">
             {/* Cartão de Crédito Visível */}
@@ -101,27 +78,14 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                     },
                 }}
                 onSubmit={async (param) => {
-                    const {
-                        paymentMethodId,
-                        issuerId,
-                        cardholderEmail,
-                        token,
-                        installments,
-                        identificationNumber,
-                        identificationType,
-                    } = param;
-
-                    // Atualiza opções de parcelas
-                    if (installmentsOptions.length === 0) {
-                        await fetchInstallments(paymentMethodId);
-                    }
+                    const { paymentMethodId, issuerId, cardholderEmail, token, installments, identificationNumber, identificationType } = param;
 
                     const paymentData = {
                         token,
                         issuer_id: issuerId,
                         payment_method_id: paymentMethodId,
                         transaction_amount: Number(course.price),
-                        installments: selectedInstallments,
+                        installments: Number(installments),
                         description: `Pagamento do curso: ${course.title}`,
                         payer: {
                             email: cardholderEmail,
@@ -141,23 +105,11 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                         },
                     },
                 }}
+                options={{
+                    // Habilite as parcelas (installments)
+                    enableInstallments: true,
+                }}
             />
-
-            {/* Select de Parcelas */}
-            <div className="mt-4">
-                <label className="block text-gray-700 font-semibold mb-1">Parcelas</label>
-                <select
-                    value={selectedInstallments}
-                    onChange={(e) => setSelectedInstallments(Number(e.target.value))}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                >
-                    {installmentsOptions.map((option) => (
-                        <option key={option.installments} value={option.installments}>
-                            {option.installments}x de R$ {option.total_amount.toFixed(2)} (Juros: {option.installment_rate}%)
-                        </option>
-                    ))}
-                </select>
-            </div>
         </div>
     );
 };
