@@ -14,7 +14,15 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
         return number.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
     };
 
-    // Lida com a mudança no número do cartão
+    // Formatação da validade do cartão
+    const formatExpiryDate = (date) => {
+        const cleanDate = date.replace(/\D/g, '');
+        if (cleanDate.length >= 3) {
+            return `${cleanDate.slice(0, 2)}/${cleanDate.slice(2, 4)}`;
+        }
+        return cleanDate;
+    };
+
     // Lida com a mudança no número do cartão
     const handleCardNumberChange = (e) => {
         const formattedNumber = formatCardNumber(e.target.value);
@@ -41,7 +49,6 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                 .then((data) => {
                     if (data.paymentMethodId) {
                         console.log('Payment Method ID:', data.paymentMethodId);
-                        // Corrige manualmente se necessário
                         let correctedPaymentMethodId = data.paymentMethodId;
                         if (data.paymentMethodId === "elo" && cardNumber.startsWith("5")) {
                             correctedPaymentMethodId = "master"; // Corrige para "master" se necessário
@@ -55,6 +62,12 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                     console.error('Erro ao obter o método de pagamento:', error);
                 });
         }
+    };
+
+    // Lida com a mudança no campo de validade
+    const handleExpiryDateChange = (e) => {
+        const formattedDate = formatExpiryDate(e.target.value);
+        setExpiryDate(formattedDate);
     };
 
     const handleConfirmPayment = () => {
@@ -87,17 +100,16 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.token) {
-                    // Token gerado com sucesso
                     const token = data.token;
 
                     // Dados do pagamento
                     const paymentData = {
-                        transaction_amount: course.price, // Valor do curso
+                        transaction_amount: course.price,
                         token: token,
                         description: `Pagamento do curso: ${course.title}`,
-                        installments: parseInt(installments), // Quantidade de parcelas
-                        payment_method_id: paymentMethodId, // Id do método de pagamento
-                        email: user.email, // E-mail do pagador
+                        installments: parseInt(installments),
+                        payment_method_id: paymentMethodId,
+                        email: user.email,
                     };
 
                     // Faz a requisição ao backend para processar o pagamento
@@ -112,9 +124,8 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                         .then((data) => {
                             if (data.message === 'Pagamento aprovado') {
                                 alert('Pagamento realizado com sucesso!');
-                                onConfirm(); // Callback para atualizar o estado do componente pai
+                                onConfirm();
                             } else {
-                                // Verifica se há um status_detail para mostrar uma mensagem específica
                                 const statusDetail = data.status_detail;
                                 let errorMessage = 'Falha no pagamento.';
 
@@ -198,7 +209,7 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                         <input
                             type="text"
                             value={expiryDate}
-                            onChange={(e) => setExpiryDate(e.target.value)}
+                            onChange={handleExpiryDateChange}
                             maxLength="5"
                             placeholder="MM/AA"
                             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
