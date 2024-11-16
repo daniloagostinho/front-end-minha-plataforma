@@ -263,6 +263,8 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
             });
 
         }
+
+        initializeCardForm();
     })
 
 
