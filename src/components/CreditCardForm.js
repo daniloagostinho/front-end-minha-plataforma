@@ -57,7 +57,6 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
         }
     };
 
-
     const handleConfirmPayment = () => {
         if (!cardNumber || !cardName || !expiryDate || !cvv) {
             alert('Preencha todos os campos corretamente.');
@@ -115,7 +114,19 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                                 alert('Pagamento realizado com sucesso!');
                                 onConfirm(); // Callback para atualizar o estado do componente pai
                             } else {
-                                alert('Falha no pagamento: ' + (data.error || 'Erro desconhecido.'));
+                                // Verifica se há um status_detail para mostrar uma mensagem específica
+                                const statusDetail = data.status_detail;
+                                let errorMessage = 'Falha no pagamento.';
+
+                                if (statusDetail === 'cc_rejected_high_risk') {
+                                    errorMessage = 'Pagamento rejeitado por motivos de segurança. Por favor, tente outro cartão ou método de pagamento.';
+                                } else if (statusDetail === 'cc_rejected_insufficient_amount') {
+                                    errorMessage = 'Pagamento rejeitado por falta de saldo. Por favor, verifique seu saldo ou tente outro cartão.';
+                                } else if (statusDetail === 'cc_rejected_other_reason') {
+                                    errorMessage = 'Pagamento rejeitado. Tente outro cartão ou entre em contato com seu banco.';
+                                }
+
+                                alert(errorMessage);
                             }
                         })
                         .catch((error) => {
