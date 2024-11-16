@@ -78,7 +78,7 @@ const Checkout = () => {
             {selectedPaymentMethod === 'pix' && (
               <PixPayment course={course} onPaymentStatusChange={handlePaymentStatusChange} />
             )}
-            {showCreditCardForm && <CreditCardForm user={user} course={course} onConfirm={(paymentMethodId) => handleConfirm(paymentMethodId)} />}
+            {showCreditCardForm && <CreditCardForm user={user} course={course} />}
           </>
         )}
       </div>

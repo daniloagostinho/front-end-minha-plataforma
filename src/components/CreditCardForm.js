@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaCreditCard } from 'react-icons/fa';
 
-const CreditCardForm = ({ onConfirm }) => {
+const CreditCardForm = ({ user, course, onConfirm }) => {
     const [cardNumber, setCardNumber] = useState('');
     const [cardName, setCardName] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
@@ -57,6 +57,11 @@ const CreditCardForm = ({ onConfirm }) => {
             return;
         }
 
+        if (!course || !user) {
+            alert('Informações do curso ou do usuário não disponíveis.');
+            return;
+        }
+
         // Dados do pagamento
         const paymentData = {
             cardNumber: cardNumber.replace(/\s/g, ''), // Remove espaços
@@ -65,6 +70,8 @@ const CreditCardForm = ({ onConfirm }) => {
             cvv,
             installments,
             paymentMethodId,
+            courseId: course.id, // Adicione o ID do curso ou outras informações necessárias
+            userId: user.id, // Adicione o ID do usuário ou outras informações necessárias
         };
 
         // Faz uma requisição ao backend para processar o pagamento
