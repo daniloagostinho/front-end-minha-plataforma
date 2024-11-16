@@ -23,7 +23,7 @@ const CreditCardForm = ({ onConfirm }) => {
         const bin = formattedNumber.replace(/\s/g, '').slice(0, 6);
         if (bin.length === 6) {
             // Faz uma requisição ao backend para obter o método de pagamento
-            fetch('/api/payment-method', {
+            fetch('https://back-end-minha-plataforma-app.vercel.app/api/payment-method', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const CreditCardForm = ({ onConfirm }) => {
         };
 
         // Faz uma requisição ao backend para processar o pagamento
-        fetch('/api/pagamento/cartao', {
+        fetch('https://back-end-minha-plataforma-app.vercel.app/api/pagamento/cartao', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
