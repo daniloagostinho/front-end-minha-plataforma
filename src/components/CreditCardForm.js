@@ -15,6 +15,7 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
     };
 
     // Lida com a mudança no número do cartão
+    // Lida com a mudança no número do cartão
     const handleCardNumberChange = (e) => {
         const formattedNumber = formatCardNumber(e.target.value);
         setCardNumber(formattedNumber);
@@ -22,7 +23,6 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
         // Captura os primeiros 6 dígitos do número do cartão sem espaços
         const bin = formattedNumber.replace(/\s/g, '').slice(0, 6);
 
-        // Certifica-se de que o bin tem exatamente 6 dígitos
         if (bin.length === 6) {
             // Faz uma requisição ao backend para obter o método de pagamento
             fetch('https://back-end-minha-plataforma-app.vercel.app/api/payment-method', {
@@ -41,7 +41,12 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                 .then((data) => {
                     if (data.paymentMethodId) {
                         console.log('Payment Method ID:', data.paymentMethodId);
-                        setPaymentMethodId(data.paymentMethodId); // Define o método de pagamento
+                        // Corrige manualmente se necessário
+                        let correctedPaymentMethodId = data.paymentMethodId;
+                        if (data.paymentMethodId === "elo" && cardNumber.startsWith("5")) {
+                            correctedPaymentMethodId = "master"; // Corrige para "master" se necessário
+                        }
+                        setPaymentMethodId(correctedPaymentMethodId);
                     } else {
                         console.error('Método de pagamento não encontrado');
                     }
@@ -51,6 +56,7 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                 });
         }
     };
+
 
     const handleConfirmPayment = () => {
         if (!cardNumber || !cardName || !expiryDate || !cvv) {
