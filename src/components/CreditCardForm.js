@@ -71,7 +71,12 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
 
             {/* Formulário de Pagamento */}
             <CardPayment
-                initialization={{ amount: course.price }}
+                initialization={{
+                    amount: course.price,
+                    payer: {
+                        email: user.email,
+                    },
+                }}
                 onSubmit={async (param) => {
                     const { paymentMethodId, issuerId, cardholderEmail, token, installments, identificationNumber, identificationType } = param;
 
