@@ -51,7 +51,7 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
     };
 
     const handleConfirmPayment = () => {
-        if (!cardNumber || !cardName || !expiryDate || !cvv || !paymentMethodId) {
+        if (!cardNumber || !cardName || !expiryDate || !cvv) {
             alert('Preencha todos os campos corretamente.');
             return;
         }
@@ -61,44 +61,66 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
             return;
         }
 
-        // Aqui você precisa substituir a lógica de obtenção do token com base na biblioteca do Mercado Pago
-        const token = generateCardToken({
+        // Dados do cartão
+        const cardData = {
             cardNumber: cardNumber.replace(/\s/g, ''), // Remove espaços
             cardName,
             expiryDate,
             cvv,
-        });
-
-        // Dados do pagamento no formato esperado pelo backend
-        const paymentData = {
-            transaction_amount: parseFloat(course.price), // Preço do curso como valor da transação
-            token: token,
-            description: `Pagamento do curso: ${course.name}`, // Descrição do pagamento
-            installments: parseInt(installments),
-            payment_method_id: paymentMethodId,
-            email: user.email, // E-mail do usuário
         };
 
-        // Faz uma requisição ao backend para processar o pagamento
-        fetch('https://back-end-minha-plataforma-app.vercel.app/api/pagamento/cartao', {
+        // Faz a requisição ao backend para gerar o token do cartão
+        fetch('https://back-end-minha-plataforma-app.vercel.app/api/gerar-token-cartao', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(paymentData),
+            body: JSON.stringify(cardData),
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.message === 'Pagamento aprovado') {
-                    alert('Pagamento realizado com sucesso!');
-                    onConfirm(); // Callback para atualizar o estado do componente pai
+                if (data.token) {
+                    // Token gerado com sucesso
+                    const token = data.token;
+
+                    // Dados do pagamento
+                    const paymentData = {
+                        transaction_amount: course.price, // Valor do curso
+                        token: token,
+                        description: `Pagamento do curso: ${course.name}`,
+                        installments: parseInt(installments), // Quantidade de parcelas
+                        payment_method_id: paymentMethodId, // Id do método de pagamento
+                        email: user.email, // E-mail do pagador
+                    };
+
+                    // Faz a requisição ao backend para processar o pagamento
+                    fetch('https://back-end-minha-plataforma-app.vercel.app/api/pagamento/cartao', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(paymentData),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.message === 'Pagamento aprovado') {
+                                alert('Pagamento realizado com sucesso!');
+                                onConfirm(); // Callback para atualizar o estado do componente pai
+                            } else {
+                                alert('Falha no pagamento: ' + (data.error || 'Erro desconhecido.'));
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Erro ao processar o pagamento:', error);
+                            alert('Erro ao processar o pagamento. Tente novamente mais tarde.');
+                        });
                 } else {
-                    alert('Falha no pagamento: ' + (data.response.message || 'Erro desconhecido.'));
+                    alert('Erro ao gerar o token do cartão: ' + (data.error || 'Erro desconhecido.'));
                 }
             })
             .catch((error) => {
-                console.error('Erro ao processar o pagamento:', error);
-                alert('Erro ao processar o pagamento. Tente novamente mais tarde.');
+                console.error('Erro ao gerar o token do cartão:', error);
+                alert('Erro ao gerar o token do cartão. Tente novamente mais tarde.');
             });
     };
 
