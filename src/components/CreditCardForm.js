@@ -5,7 +5,7 @@ import { initMercadoPago, CardPayment } from '@mercadopago/sdk-react';
 const CreditCardForm = ({ user, course, onConfirm }) => {
     useEffect(() => {
         // Inicializa o Mercado Pago com sua chave pública
-        initMercadoPago('SUA_PUBLIC_KEY', { locale: 'pt-BR' });
+        initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
     }, []);
 
     const handlePayment = async (paymentData) => {
