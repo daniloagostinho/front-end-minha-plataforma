@@ -54,12 +54,12 @@
               /*
                 "amount" é a quantia total a pagar por todos os meios de pagamento com exceção da Conta Mercado Pago e Parcelas sem cartão de crédito, que têm seus valores de processamento determinados no backend através do "preferenceId"
               */
-              amount: 10000,
-              preferenceId: "<PREFERENCE_ID>",
+              amount: 3.0,
+              // preferenceId: "<PREFERENCE_ID>",
               payer: {
-                firstName: "",
-                lastName: "",
-                email: "",
+                firstName: "Danilo",
+                lastName: "Agostinho",
+                email: "danilodev.silva@gmail.com",
               },
             },
             customization: {
@@ -89,7 +89,7 @@
               onSubmit: ({ selectedPaymentMethod, formData }) => {
                 // callback chamado quando há click no botão de envio de dados
                 return new Promise((resolve, reject) => {
-                  fetch("/process_payment", {
+                  fetch("https://back-end-minha-plataforma-app.vercel.app/api/process_payment", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
