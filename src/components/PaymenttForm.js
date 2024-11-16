@@ -4,10 +4,11 @@ import { initMercadoPago } from '@mercadopago/sdk-react';
 const PaymentForm = ({ user, course, onPaymentSuccess }) => {
     useEffect(() => {
         // Inicializa o Mercado Pago com sua chave pública
-        // initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
-        initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea');
+        initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
         
         const renderPaymentBrick = async () => {
+            const mp = new window.MercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
+            const bricksBuilder = mp.bricks();
 
             const settings = {
                 initialization: {
@@ -73,6 +74,7 @@ const PaymentForm = ({ user, course, onPaymentSuccess }) => {
                     },
                 },
             };
+            await bricksBuilder.create('payment', 'paymentBrick_container', settings);
         };
 
         renderPaymentBrick();
