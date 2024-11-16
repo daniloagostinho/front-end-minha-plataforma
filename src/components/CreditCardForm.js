@@ -50,28 +50,33 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
         }
     };
 
-    // Função para confirmar o pagamento
     const handleConfirmPayment = () => {
         if (!cardNumber || !cardName || !expiryDate || !cvv || !paymentMethodId) {
             alert('Preencha todos os campos corretamente.');
             return;
         }
 
-        // if (!course || !user) {
-        //     alert('Informações do curso ou do usuário não disponíveis.');
-        //     return;
-        // }
+        if (!course || !user) {
+            alert('Informações do curso ou do usuário não disponíveis.');
+            return;
+        }
 
-        // Dados do pagamento
-        const paymentData = {
+        // Aqui você precisa substituir a lógica de obtenção do token com base na biblioteca do Mercado Pago
+        const token = generateCardToken({
             cardNumber: cardNumber.replace(/\s/g, ''), // Remove espaços
             cardName,
             expiryDate,
             cvv,
-            installments,
-            paymentMethodId,
-            courseId: course.id, // Adicione o ID do curso ou outras informações necessárias
-            userId: user.id, // Adicione o ID do usuário ou outras informações necessárias
+        });
+
+        // Dados do pagamento no formato esperado pelo backend
+        const paymentData = {
+            transaction_amount: parseFloat(course.price), // Preço do curso como valor da transação
+            token: token,
+            description: `Pagamento do curso: ${course.name}`, // Descrição do pagamento
+            installments: parseInt(installments),
+            payment_method_id: paymentMethodId,
+            email: user.email, // E-mail do usuário
         };
 
         // Faz uma requisição ao backend para processar o pagamento
@@ -84,11 +89,11 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.success) {
+                if (data.message === 'Pagamento aprovado') {
                     alert('Pagamento realizado com sucesso!');
                     onConfirm(); // Callback para atualizar o estado do componente pai
                 } else {
-                    alert('Falha no pagamento: ' + (data.error || 'Erro desconhecido.'));
+                    alert('Falha no pagamento: ' + (data.response.message || 'Erro desconhecido.'));
                 }
             })
             .catch((error) => {
@@ -96,6 +101,13 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                 alert('Erro ao processar o pagamento. Tente novamente mais tarde.');
             });
     };
+
+    // Função simulada para gerar um token (substitua isso com a lógica real da biblioteca do Mercado Pago)
+    function generateCardToken({ cardNumber, cardName, expiryDate, cvv }) {
+        // Aqui você deve integrar com a API ou biblioteca correta para gerar o token do cartão
+        return 'simulated-card-token';
+    }
+
 
     return (
         <div className="w-full p-4">
