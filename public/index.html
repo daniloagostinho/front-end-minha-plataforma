@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
-      name="description"
-      content="Web site created using create-react-app"
+    name="description"
+    content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
 
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -42,88 +42,6 @@
       To create a production bundle, use `npm run build` or `yarn build`.
       
     -->
-
-    <div id="paymentBrick_container">
-    </div>
-
-    <script>
-      const mp = new MercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', {
-        locale: 'pt'
-      });
-      const bricksBuilder = mp.bricks();
-        const renderPaymentBrick = async (bricksBuilder) => {
-          const settings = {
-            initialization: {
-              /*
-                "amount" é a quantia total a pagar por todos os meios de pagamento com exceção da Conta Mercado Pago e Parcelas sem cartão de crédito, que têm seus valores de processamento determinados no backend através do "preferenceId"
-              */
-              amount: 3.0,
-              // preferenceId: "<PREFERENCE_ID>",
-              payer: {
-                firstName: "Danilo",
-                lastName: "Agostinho",
-                email: "danilodev.silva@gmail.com",
-              },
-            },
-            customization: {
-              visual: {
-                style: {
-                  theme: "default",
-                },
-              },
-              paymentMethods: {
-                creditCard: "all",
-                        debitCard: "all",
-                        ticket: "all",
-                        bankTransfer: "all",
-                        atm: "all",
-                        onboarding_credits: "all",
-                        wallet_purchase: "all",
-                maxInstallments: 1
-              },
-            },
-            callbacks: {
-              onReady: () => {
-                /*
-                 Callback chamado quando o Brick está pronto.
-                 Aqui, você pode ocultar seu site, por exemplo.
-                */
-              },
-              onSubmit: ({ selectedPaymentMethod, formData }) => {
-                // callback chamado quando há click no botão de envio de dados
-                return new Promise((resolve, reject) => {
-                  fetch("https://back-end-minha-plataforma-app.vercel.app/api/process_payment", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData),
-                  })
-                    .then((response) => response.json())
-                    .then((response) => {
-                      // receber o resultado do pagamento
-                      resolve();
-                    })
-                    .catch((error) => {
-                      // manejar a resposta de erro ao tentar criar um pagamento
-                      reject();
-                    });
-                });
-              },
-              onError: (error) => {
-                // callback chamado para todos os casos de erro do Brick
-                console.error(error);
-              },
-            },
-          };
-          window.paymentBrickController = await bricksBuilder.create(
-            "payment",
-            "paymentBrick_container",
-            settings
-          );
-        };
-        renderPaymentBrick(bricksBuilder);
-      </script>
 
   </body>
 </html>
