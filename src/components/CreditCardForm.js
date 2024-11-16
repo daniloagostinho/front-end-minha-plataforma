@@ -87,7 +87,7 @@ const CreditCardForm = ({ user, course, onConfirm }) => {
                     const paymentData = {
                         transaction_amount: course.price, // Valor do curso
                         token: token,
-                        description: `Pagamento do curso: ${course.name}`,
+                        description: `Pagamento do curso: ${course.title}`,
                         installments: parseInt(installments), // Quantidade de parcelas
                         payment_method_id: paymentMethodId, // Id do método de pagamento
                         email: user.email, // E-mail do pagador
