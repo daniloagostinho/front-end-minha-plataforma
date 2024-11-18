@@ -7,78 +7,85 @@ const PaymentForm = ({ user, course, onPaymentSuccess }) => {
         initMercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
         
         const renderPaymentBrick = async () => {
-            const mp = new window.MercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
-            const bricksBuilder = mp.bricks();
+            try {
+                const mp = new window.MercadoPago('APP_USR-7ccdd71d-8235-436e-b44a-bfa6aa1c05ea', { locale: 'pt-BR' });
+                const bricksBuilder = mp.bricks();
 
-            const settings = {
-                initialization: {
-                    amount: course.price, // Quantia total a pagar
-                    payer: {
-                        firstName: user.firstName || '',
-                        lastName: user.lastName || '',
-                        email: user.email,
-                    },
-                },
-                customization: {
-                    visual: {
-                        style: {
-                            theme: 'default',
+                const settings = {
+                    initialization: {
+                        amount: course.price, // Quantia total a pagar
+                        payer: {
+                            firstName: user.firstName || '',
+                            lastName: user.lastName || '',
+                            email: user.email,
+                            identification: {
+                                type: 'CPF', // ou outro tipo de documento, se aplicável
+                                number: user.cpf || '', // Adicione o CPF do usuário
+                            },
                         },
                     },
-                    paymentMethods: {
-                        creditCard: 'all',
-                        debitCard: 'all',
-                        ticket: 'all',
-                        bankTransfer: 'all',
-                        atm: 'all',
-                        onboarding_credits: 'all',
-                        wallet_purchase: 'all',
-                        maxInstallments: 1,
+                    customization: {
+                        visual: {
+                            style: {
+                                theme: 'default',
+                            },
+                        },
+                        paymentMethods: {
+                            creditCard: 'all',
+                            debitCard: 'all',
+                            ticket: 'all',
+                            bankTransfer: 'all',
+                            atm: 'all',
+                            onboarding_credits: 'all',
+                            wallet_purchase: 'all',
+                            maxInstallments: 1,
+                        },
                     },
-                },
-                callbacks: {
-                    onReady: () => {
-                        // Callback chamado quando o Brick está pronto
-                        console.log('Payment Brick está pronto');
-                    },
-                    onSubmit: ({ selectedPaymentMethod, formData }) => {
-                        return new Promise((resolve, reject) => {
-                            fetch('https://back-end-minha-plataforma-app.vercel.app/api/process_payment', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(formData),
-                            })
-                                .then((response) => response.json())
-                                .then((result) => {
-                                    if (result.status === 'approved') {
-                                        alert('Pagamento aprovado!');
-                                        onPaymentSuccess();
-                                        resolve();
-                                    } else {
-                                        alert(`Pagamento falhou: ${result.status_detail}`);
-                                        reject();
-                                    }
+                    callbacks: {
+                        onReady: () => {
+                            console.log('Payment Brick está pronto');
+                        },
+                        onSubmit: ({ selectedPaymentMethod, formData }) => {
+                            return new Promise((resolve, reject) => {
+                                fetch('https://back-end-minha-plataforma-app.vercel.app/api/process_payment', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(formData),
                                 })
-                                .catch((error) => {
-                                    console.error('Erro ao criar o pagamento:', error);
-                                    alert('Erro ao processar o pagamento. Tente novamente mais tarde.');
-                                    reject();
-                                });
-                        });
+                                    .then((response) => response.json())
+                                    .then((result) => {
+                                        if (result.status === 'approved') {
+                                            alert('Pagamento aprovado!');
+                                            onPaymentSuccess();
+                                            resolve();
+                                        } else {
+                                            alert(`Pagamento falhou: ${result.status_detail}`);
+                                            reject();
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.error('Erro ao criar o pagamento:', error);
+                                        alert('Erro ao processar o pagamento. Tente novamente mais tarde.');
+                                        reject();
+                                    });
+                            });
+                        },
+                        onError: (error) => {
+                            console.error('Erro no Payment Brick:', error);
+                            alert('Erro no processamento do pagamento. Verifique os dados e tente novamente.');
+                        },
                     },
-                    onError: (error) => {
-                        console.error('Erro no Payment Brick:', error);
-                        alert('Erro no processamento do pagamento. Verifique os dados e tente novamente.');
-                    },
-                },
-            };
-            await bricksBuilder.create('payment', 'paymentBrick_container', settings);
+                };
+                await bricksBuilder.create('payment', 'paymentBrick_container', settings);
+            } catch (error) {
+                console.error('Erro ao inicializar o Payment Brick:', error);
+            }
         };
 
         renderPaymentBrick();
-    }, [course.price, user.email, user.firstName, user.lastName, onPaymentSuccess]);
+    }, [course.price, user.email, user.firstName, user.lastName, user.cpf, onPaymentSuccess]);
 
     return <div id="paymentBrick_container" className="payment-form"></div>;
 };
